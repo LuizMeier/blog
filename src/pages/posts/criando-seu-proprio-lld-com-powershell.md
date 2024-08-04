@@ -1,8 +1,8 @@
 ---
 layout: ../../layouts/post.astro
-title: "Criando seu próprio LLD com Powershell"
+title: "Criando seu próprio LLD"
 pubDate: 2017-08-04
-description: "Como criar seu próprio LLD usando Powershell."
+description: "Como criar seu próprio LLD usando Powershell"
 author: "Luiz Meier"
 excerpt: Bom Dia! Após uma necessidade específica de um colega na lista [Zabbix Brasil](https://br.groups.yahoo.com/neo/groups/zabbix-brasil/info), resolvi fazer este post para dar uma ideia geral de como funciona o recurso de LLD do Zabbix e de como você pode fazer a sua própria regra de descoberta, baseada nas suas necessidades. 
 image:
@@ -29,7 +29,7 @@ A documentação do LLD está bem clara e objetiva. Inclusive, com versão em po
 
 ### O Script
 
-Vamos supor aqui que nós precisemos saber o tamanho de cada arquivo existente em uma determinada pasta. Poderiam ser arquivos de um sistema, cujos tamanhos precisam ser monitorados individualmente.
+Vamos supor aqui que nós precisemos saber o tamanho de cada arquivo existente em uma determinada pasta. Poderiam ser arquivos de um sistema, cujos tamanhos precisam ser monitorados individualmente. Para este tutorial usarei Powershell.
 
 **Dica**: o [Powershell ISE](https://technet.microsoft.com/pt-br/library/dd759217(v=ws.11).aspx) ou o [Visual Studio Code](https://code.visualstudio.com/) são ótimas IDEs para você desenvolver seus scripts.
 
@@ -38,7 +38,7 @@ Primeiro, vamos criar uma forma de listar estes arquivos e o seu tamanho. Para i
 ```powershell
 Get-ChildItem C:\Temp
 ```  
-![](../../../public/lld/1.png)
+![](../../../public/lld/1.png "Imprimindo arquivos")
 
 Opa! Só com esse simples cmdlet já conseguimos listar os arquivos do diretório e os seus respectivos tamanhos.
 
@@ -48,7 +48,7 @@ Agora vamos testar como fazemos para imprimir somente o tamanho de arquivo espec
 Get-ChildItem C:\Temp\lalala.zip
 ```
 
-![](../../../public/lld/2.png)
+![](../../../public/lld/2.png "Imprimindo tamanho de arquivo específico")
 
 Conseguimos listar informações do arquivo em questão, mas juntamente com outros dados que não são importantes para o que queremos. Com uma saída dessa forma, não conseguiremos monitorar somente o tamanho. Sendo assim, vamos imprimir somente o tamanho do arquivo em si. Para isto, vamos colocar o comando entre parênteses e fixar que somente queremos os dados referentes à coluna _Lenght_, que é o tamanho do arquivo.
 
@@ -56,7 +56,7 @@ Conseguimos listar informações do arquivo em questão, mas juntamente com outr
 (Get-ChildItem C:\Temp\lalala.zip).Lenght
 ```  
 
-![](../../../public/lld/3.png)
+![](../../../public/lld/3.png "Imprimindo somente o valor do tamanho")
 
 Ótimo! Conseguimos então que o script somente imprima o dado que desejamos. Agora temos que encontrar uma forma de que o script trabalhe dinamicamente, de forma que para cada arquivo na pasta, o comando powershell seja diferente.
 
@@ -80,7 +80,7 @@ Isto posto, salve esse script e execute-o via powershell, passando o nome do arq
 C:\temp\monit-arquivos.ps1 lalala.zip
 ```  
 
-![](../../../public/lld/4.png)
+![](../../../public/lld/4.png "Imprimindo tamanho usando o novo script")
   
 
 ### Estruturando o script
@@ -109,7 +109,7 @@ Agora salve o script e execute-o para checar se está funcionando conforme o esp
 C:\Temp\monit-arquivos.ps1 tamanho lalala.zip
 ```  
 
-![](../../../public/lld/5.png)
+![](../../../public/lld/5.png "Imprimindo valor usando parâmetro de ação")
   
 Ótimo! Agora vamos para a segunda parte, que é onde faremos o LLD propriamente dito. O bloco abaixo varre todos os arquivos do diretório informado e imprime em formato JSON o nome de cada arquivo, identificado pela macro **{#NOMEARQUIVO}**. Essa macro (que podem ser várias) é uma variável que será utilizada pelo Zabbix para dar nome aos itens, triggers e etc.  
   
@@ -151,9 +151,9 @@ C:\Temp\monit-arquivos.ps1 tamanho lalala.zip
 ```  
 Execute o script para ver a saída em formato JSON, que você pode validar em qualquer validador desses na internet. Aqui usei o [JSONLint](https://jsonlint.com/).  
 
-![](../../../public/lld/6.png)
+![](../../../public/lld/6.png "Executando desoberta de arquivos")
 
-![](../../../public/lld/7.png)
+![](../../../public/lld/7.png "Validando JSON")
 
   
 Feito isto, junte as duas partes do script e estamos prontos.
@@ -234,15 +234,15 @@ zabbix_get -k monit-arquivos[tamanho,lalala.zip]
 Agora vamos criar o nosso processo de descoberta. Crie um template novo (ou edite um host) e vá até a aba Regras de Descoberta. Clique na opção _Criar regra de descoberta._  
   
 
-![](../../../public/lld/8.png)
+![](../../../public/lld/8.png "Regras de descoberta")
 
 Na tela seguinte, dê um nome para a sua regra de descoberta e informe o nome da chave igual colocamos no parâmetro de usuário, no arquivo de configuração do Zabbix. Estamos configurando aqui de quanto em quanto tempo o Zabbix fará o processo de descoberta, que nada mais é que executar o script que criamos sem informar nenhum parâmetro.  
 
-![](../../../public/lld/9.png)
+![](../../../public/lld/9.png "Criando regra de descoberta")
 
 Feito isto, vá até a opção de protótipos de itens e adicione o item de monitoramento em si. Aqui adicionaremos a chave que criamos e passaremos os parâmetros que testamos anteriormente.  
   
-![](../../../public/lld/10.png)
+![](../../../public/lld/10.png "Criando protótipo de item")
 
   
 Agora aguarde o tempo que você estipulou para a coleta e cheque em "Dados recentes" se as coletas estão sendo feitas corretamente. Erros podem ser checados tanto no arquivo de log do agente quanto do servidor.  
