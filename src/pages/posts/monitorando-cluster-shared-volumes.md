@@ -24,7 +24,7 @@ De modo geral, os discos que são apresentados a um cluster possuem um "dono". I
   
 Um dos pequenos "problemas" de se usar CSV é que o cluster simplesmente consome o volume e direciona-o para um diretório em C:\\ClusterStorage\\VolumeX, com X sendo incrementado a cada novo volume adicionado aos CSV.  
   
-Levando em conta que não poderíamos simplesmente monitorar os discos naturalmente através das chaves padrão do Zabbix (pois os discos não "existem" mais!), só nos restou desenvolver um script para coletar estes dados de forma dinâmica, através do LLD. Você pode baixá-lo [aqui](https://github.com/LuizMeier/Zabbix/tree/master/CSV). Depois de baixá-lo, salve-o em um diretório de sua escolha.  
+Levando em conta que não poderíamos simplesmente monitorar os discos naturalmente através das chaves padrão do Zabbix (pois os discos não "existem" mais!), só nos restou desenvolver um script para coletar estes dados de forma dinâmica, através do LLD. Você pode baixá-lo [aqui](https://github.com/LuizMeier/Zabbix/tree/master/ClusterSharedVolume). Depois de baixá-lo, salve-o em um diretório de sua escolha.  
 
 
 ### 1) Testando o script
