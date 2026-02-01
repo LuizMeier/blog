@@ -8,6 +8,8 @@ tags: [CCTV, Hardware, Intelbras]
 description: "A Last-Resort Guide to Try Before Losing Your Equipment"
 lang: en
 image: assets/img/bricked-camera/cover.png
+redirect_from:
+  - /posts/como-recuperei-uma-camera-cftv-brickada/
 ---
 
 <!-- *Leia em [português](https://blog.lmeier.net/posts/como-recuperei-uma-camera-cftv-brickada/)* -->

@@ -13,6 +13,7 @@ plugins:
   - jekyll-polyglot
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-redirect-from
 
 polyglot:
   # Polylgot settings
