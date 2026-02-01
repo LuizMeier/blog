@@ -8,6 +8,8 @@ categories: [Zabbix, Monitoring, Python, API, NGFW, "Palo Alto"]
 tags: [Zabbix, Monitoring, Python, API, NGFW, "Palo Alto"]
 lang: en
 image: assets/img/lb-fortinet-paloalto/cover.png
+redirect_from:
+  - /posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/
 ---
 
 <!-- [*Também disponível em Português*](https://blog.lmeier.net/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/) -->
