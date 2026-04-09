@@ -1,0 +1,16 @@
+services:
+  jekyll:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: chirpy-blog
+    working_dir: /var/jekyll
+    command: bash -lc "bundle _2.5.23_ install && bundle _2.5.23_ exec jekyll serve --host 0.0.0.0 --watch --force_polling --drafts"
+    ports:
+      - "4000:4000"
+    volumes:
+      - ../:/var/jekyll
+      - bundle_cache:/usr/local/bundle
+
+volumes:
+  bundle_cache:
