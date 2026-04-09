@@ -4,8 +4,8 @@ title: "Como construí meu primeiro MCP para operações de DNS"
 description: "Como construí um MCP para operações de DNS focado em intenção em vez de endpoints, aplicando IA em cenários reais de DDI."
 date: "2026-04-01 10:00:00 +0000"
 author: "Luiz Meier"
-categories: [IA, DNS, DDI, MCP]
-tags: ["Infoblox", DNS, AI, MCP, Automation, DDI]
+categories: [AI, DNS, DDI, MCP]
+tags: [Infoblox, DNS, AI, MCP, Automation, DDI]
 lang: pt-BR
 mermaid: true
 image: assets/img/mcp-ddi/cover.png
