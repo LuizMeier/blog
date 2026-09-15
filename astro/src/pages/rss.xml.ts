@@ -5,7 +5,7 @@ import { getPostsByLocale, slugFromId } from '../lib/posts';
 export async function GET(context: APIContext) {
   const posts = await getPostsByLocale('en');
   return rss({
-    title: 'MeierNet',
+    title: 'Luiz Meier',
     description: 'Exploring Tech, One Packet at a Time',
     site: context.site!,
     items: posts.map((entry) => ({
