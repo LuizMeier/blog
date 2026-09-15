@@ -1,6 +1,6 @@
 ---
+import Base from './Base.astro';
 import { localeUrl } from '../lib/urls';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../lib/posts';
 
@@ -19,16 +19,22 @@ const canonicalUrl = new URL(localeUrl(locale, path), Astro.site);
 const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
 const translationUrl = translation ? new URL(localeUrl(other, path), Astro.site) : null;
 const imageUrl = image ? new URL(image, Astro.site) : null;
+
+const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}).format(date);
 ---
 
-<html lang={locale}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
-
+<Base
+  locale={locale}
+  title={`${title} · MeierNet`}
+  description={description}
+  translationPath={translation ? path : null}
+  canonicalUrl={canonicalUrl}
+>
+  <Fragment slot="head">
     <link rel="alternate" hreflang={locale} href={canonicalUrl} />
     {translationUrl && <link rel="alternate" hreflang={other} href={translationUrl} />}
     {translationUrl && locale === 'en' && <link rel="alternate" hreflang="x-default" href={canonicalUrl} />}
@@ -39,26 +45,94 @@ const imageUrl = image ? new URL(image, Astro.site) : null;
     <meta property="og:url" content={canonicalUrl} />
     {imageUrl && <meta property="og:image" content={imageUrl} />}
     <meta name="twitter:card" content="summary_large_image" />
-  </head>
-  <body>
-    <header>
-      <LanguageSwitcher locale={locale} translationPath={translation ? path : null} />
+    <script type="module" src="/scripts/mermaid.js"></script>
+  </Fragment>
+
+  <article class="wrap post">
+    <header class="post-head">
+      <div class="meta">
+        <span class="category">{categories[0]}</span>
+        <time datetime={date.toISOString()}>{dateFmt}</time>
+      </div>
+      <h1>{title}</h1>
+      <p class="byline">{author}</p>
     </header>
-    <main>
-      <article>
-        <h1>{title}</h1>
-        <p>
-          <time datetime={date.toISOString()}>{date.toLocaleDateString(locale)}</time>
-          {' · '}{author}
-        </p>
-        <p>
-          {categories.map((c) => <span>{c}</span>)}
-        </p>
-        <slot />
-        <footer>
-          <p>{tags.map((t) => <span>#{t}</span>)}</p>
-        </footer>
-      </article>
-    </main>
-  </body>
-</html>
+
+    {image && <img class="cover" src={image} alt="" />}
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <footer class="post-foot">
+      {tags.map((t) => <span class="tag">#{t}</span>)}
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .post {
+    padding-block: 32px 56px;
+  }
+  .post-head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    color: var(--color-muted-fg);
+  }
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    margin: 0;
+  }
+  .byline {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--color-muted-fg);
+  }
+  .cover {
+    width: 100%;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    margin-bottom: 28px;
+  }
+  .prose :global(h2) {
+    font-size: 1.3rem;
+    margin-top: 2em;
+  }
+  .prose :global(h3) {
+    font-size: 1.08rem;
+    margin-top: 1.6em;
+  }
+  .prose :global(h4) {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-fg);
+    margin-top: 1.6em;
+  }
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    max-width: 68ch;
+  }
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+  }
+  .post-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+  }
+</style>

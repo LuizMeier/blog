@@ -95,6 +95,18 @@ Roteamento, SEO/hreflang e RSS implementados em `astro/src/`. Duas decisões que
 
 **Lição para a Fase 3 (migração dos 16 posts reais):** qualquer código que compare o idioma a partir do path/id de um arquivo de conteúdo precisa ser case-insensitive, ou usar sempre minúsculo internamente. Os arquivos de conteúdo em si continuam podendo ficar em pastas `en/` e `pt-BR/` no disco — é só o `id` derivado pelo Astro que vem normalizado.
 
-## 7. Próximo passo
+## 7. Fase 2 — visual e uma segunda pegadinha de ambiente Docker
 
-Fase 1 concluída. Segue para a Fase 2 (visual): adaptar o tema AstroPaper com a paleta escura/sóbria, protótipo navegável com 2-3 posts reais para aprovação antes de migrar o conteúdo completo.
+Protótipo em `astro/src/`, com 3 posts reais migrados como fixture de validação (`how-i-built-my-first-mcp-for-dns-operations` en+pt-BR, `creating-your-own-custom-lld-in-zabbix` en) — escolhidos por cobrirem casos variados: diagramas Mermaid, blocos de código em três linguagens, várias imagens embutidas, blockquotes, listas. Migração completa dos 16 posts continua sendo Fase 3.
+
+**Paleta e tipografia**, baseadas na estrutura real de tokens do tema AstroPaper (`--color-background/foreground/accent/muted/border`, confirmados no repo oficial), com os valores de cor substituídos por uma paleta mais sóbria — o accent original do AstroPaper é um laranja vibrante (`#ff6b01`), trocado por um teal dessaturado. Tipografia: **Google Sans Code** (monoespaçada, a mesma do AstroPaper) para títulos, navegação e código; **IBM Plex Sans** para o corpo do texto — o AstroPaper usa a monoespaçada para tudo, o que arriscaria legibilidade nos tutoriais longos deste blog.
+
+**Tema claro/escuro**: escuro como padrão (pedido explícito), com alternância manual persistida em `localStorage`. Diagramas Mermaid renderizados no cliente (`public/scripts/mermaid.js`, via CDN) respeitando o tema ativo.
+
+**Escopo reduzido nesta fase:** páginas de tag/categoria individuais (`/tags/{tag}/`) ficam como página de índice simples (lista de badges, sem drill-down) — implementar o drill-down faz parte da Fase 3, junto com a migração completa de conteúdo.
+
+**Achado de ambiente, não de código:** o Astro grava o PID do processo de dev em `.astro/dev.json` para detectar uma segunda instância já rodando. Como cada container Docker reinicia a numeração de PID do zero, um container recriado frequentemente "colide" por coincidência com o PID salvo de uma execução anterior, e o Astro recusa subir — sem erro visível, a porta simplesmente não responde (sintoma: `curl` trava ou dá connection reset). Isso explica boa parte da instabilidade enfrentada ao iterar nesta sessão. Corrigido de forma permanente em `docker/docker-compose.yml`: o comando do serviço `astro` agora remove esse arquivo antes de cada `npm run dev`.
+
+## 8. Próximo passo
+
+Fase 2 (protótipo) pronta para revisão visual. Após aprovação: Fase 3 — migração dos 16 posts reais, páginas de tag/categoria completas, giscus, Pagefind, tabela de redirects aplicada.

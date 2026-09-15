@@ -18,7 +18,12 @@ services:
       dockerfile: docker/Dockerfile.astro
     container_name: meiernet-blog-astro
     working_dir: /app
-    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0"
+    # rm -f .astro/dev.json: o Astro grava o PID do processo anterior nesse
+    # arquivo para detectar um dev server já rodando. Como cada container
+    # reinicia a numeração de PID do zero, um novo processo pode coincidir
+    # com o PID salvo e o Astro recusa subir (achando que já está rodando),
+    # travando a porta silenciosamente sem erro claro.
+    command: sh -lc "rm -f .astro/dev.json && npm install && npm run dev -- --host 0.0.0.0"
     ports:
       - "4321:4321"
     volumes:

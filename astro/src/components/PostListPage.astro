@@ -1,6 +1,7 @@
 ---
-import { localeUrl } from '../lib/urls';
-import { getPostsByLocale, slugFromId, type Locale } from '../lib/posts';
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import { getPostsByLocale, type Locale } from '../lib/posts';
 
 interface Props {
   locale: Locale;
@@ -8,36 +9,47 @@ interface Props {
 
 const { locale } = Astro.props;
 const posts = await getPostsByLocale(locale);
-const title = locale === 'en' ? 'MeierNet' : 'MeierNet';
+const t =
+  locale === 'en'
+    ? { tagline: 'Exploring Tech, One Packet at a Time', empty: 'No posts migrated yet.' }
+    : { tagline: 'Explorando tecnologia, um pacote de cada vez', empty: 'Nenhum post migrado ainda.' };
 ---
 
-<html lang={locale}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
-    <link rel="alternate" type="application/rss+xml" title={title} href={localeUrl(locale, '/rss.xml')} />
-  </head>
-  <body>
-    <header>
-      <h1>{title}</h1>
-    </header>
-    <main>
-      <ul>
-        {
-          posts.map((entry) => {
-            const slug = slugFromId(entry.id);
-            const href = localeUrl(locale, `/posts/${slug}/`);
-            return (
-              <li>
-                <a href={href}>{entry.data.title}</a>
-                <p>{entry.data.description}</p>
-              </li>
-            );
-          })
-        }
-      </ul>
-      {posts.length === 0 && <p>Nenhum post migrado ainda (Fase 3).</p>}
-    </main>
-  </body>
-</html>
+<Base locale={locale} title="MeierNet" description={t.tagline} translationPath="/">
+  <Fragment slot="head">
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="MeierNet"
+      href={locale === 'en' ? '/rss.xml' : '/pt-BR/rss.xml'}
+    />
+  </Fragment>
+
+  <div class="wrap list">
+    <p class="tagline">{t.tagline}</p>
+    <div class="posts">
+      {posts.map((entry) => <PostCard entry={entry} locale={locale} />)}
+      {posts.length === 0 && <p class="empty">{t.empty}</p>}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .list {
+    padding-block: 28px 48px;
+  }
+  .tagline {
+    font-family: var(--font-display);
+    color: var(--color-muted-fg);
+    font-size: 0.9rem;
+    margin: 0 0 24px;
+  }
+  .posts {
+    display: flex;
+    flex-direction: column;
+  }
+  .empty {
+    color: var(--color-muted-fg);
+    padding-block: 24px;
+  }
+</style>

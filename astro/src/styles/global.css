@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
+/* Paleta sóbria, dark-first (pedido explícito do autor). Tokens inspirados
+   na estrutura do tema AstroPaper (background/foreground/accent/muted/
+   border), com valores próprios — o accent original do AstroPaper é um
+   laranja vibrante, trocado aqui por um teal dessaturado. */
+:root {
+  --color-bg: #f6f4ef;
+  --color-fg: #201f1c;
+  --color-muted: #ece7dc;
+  --color-muted-fg: #6b6558;
+  --color-border: #ddd6c8;
+  --color-accent: #3f7d74;
+  --color-accent-fg: #f6f4ef;
+  --color-ok: #3f7d4f;
+  --color-code-bg: #ece7dc;
+
+  --font-display: "Google Sans Code", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #14161a;
+    --color-fg: #e6e4df;
+    --color-muted: #1c1f24;
+    --color-muted-fg: #9aa0ab;
+    --color-border: #2a2e35;
+    --color-accent: #7ab3ab;
+    --color-accent-fg: #0b1210;
+    --color-ok: #7fb583;
+    --color-code-bg: #1c1f24;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #14161a;
+  --color-fg: #e6e4df;
+  --color-muted: #1c1f24;
+  --color-muted-fg: #9aa0ab;
+  --color-border: #2a2e35;
+  --color-accent: #7ab3ab;
+  --color-accent-fg: #0b1210;
+  --color-ok: #7fb583;
+  --color-code-bg: #1c1f24;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+}
+
+.wrap {
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+code,
+pre {
+  font-family: var(--font-display);
+  font-size: 0.92em;
+}
+
+pre {
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+:not(pre) > code {
+  background: var(--color-code-bg);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}
+
+blockquote {
+  margin: 0;
+  padding-inline-start: 16px;
+  border-inline-start: 3px solid var(--color-accent);
+  color: var(--color-muted-fg);
+}
+
+.tag,
+.category {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted-fg);
+  background: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.mermaid-diagram {
+  overflow-x: auto;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-block: 1.5em;
+}
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-inline: auto;
+}
+
+@media (max-width: 480px) {
+  .wrap {
+    padding-inline: 16px;
+  }
+}

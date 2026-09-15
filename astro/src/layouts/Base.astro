@@ -1,0 +1,40 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  translationPath: string | null;
+  canonicalUrl?: URL;
+}
+
+const { locale, title, description, translationPath, canonicalUrl } = Astro.props;
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem('theme');
+        if (stored) document.documentElement.setAttribute('data-theme', stored);
+      })();
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <Header locale={locale} translationPath={translationPath} />
+    <main>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPostsByLocale } from '../../lib/posts';
+
+const posts = await getPostsByLocale('en');
+const counts = new Map<string, number>();
+for (const p of posts) {
+  for (const c of p.data.categories) counts.set(c, (counts.get(c) ?? 0) + 1);
+}
+const categories = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<Base locale="en" title="Categories · MeierNet" description="All categories" translationPath="/categories/">
+  <div class="wrap page">
+    <h1>Categories</h1>
+    <ul class="list">
+      {
+        categories.map(([cat, count]) => (
+          <li>
+            <span class="category">{cat}</span> <small>{count}</small>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: 32px 56px;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+  .list {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .list small {
+    color: var(--color-muted-fg);
+  }
+</style>

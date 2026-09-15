@@ -1,0 +1,44 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getPostsByLocale } from '../../../lib/posts';
+
+const posts = await getPostsByLocale('pt-BR');
+const counts = new Map<string, number>();
+for (const p of posts) {
+  for (const t of p.data.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+}
+const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<Base locale="pt-BR" title="Tags · MeierNet" description="Todas as tags" translationPath="/tags/">
+  <div class="wrap page">
+    <h1>Tags</h1>
+    <div class="cloud">
+      {
+        tags.map(([tag, count]) => (
+          <span class="tag">
+            {tag} <small>{count}</small>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: 32px 56px;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+  .cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .tag small {
+    color: var(--color-muted-fg);
+  }
+</style>

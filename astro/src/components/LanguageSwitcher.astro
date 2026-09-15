@@ -13,16 +13,37 @@ const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
 const otherHref = translationPath ? localeUrl(other, translationPath) : null;
 ---
 
-<nav aria-label="Idioma">
-  <span aria-current="true">{locale}</span>
+<span class="lang-switch" aria-label="Idioma">
+  <span class="current" aria-current="true">{locale}</span>
   {
     otherHref && (
       <>
-        {' · '}
+        <span class="sep">/</span>
         <a href={otherHref} hreflang={other}>
           {other}
         </a>
       </>
     )
   }
-</nav>
+</span>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .current {
+    color: var(--color-fg);
+  }
+  .sep {
+    color: var(--color-border);
+  }
+  .lang-switch a {
+    color: var(--color-muted-fg);
+    text-decoration: none;
+  }
+  .lang-switch a:hover {
+    color: var(--color-fg);
+  }
+</style>
