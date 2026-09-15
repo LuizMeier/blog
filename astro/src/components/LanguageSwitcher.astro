@@ -8,19 +8,21 @@ interface Props {
   translationPath: string | null;
 }
 
+const label: Record<Locale, string> = { en: 'English', 'pt-BR': 'Português' };
+
 const { locale, translationPath } = Astro.props;
 const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
 const otherHref = translationPath ? localeUrl(other, translationPath) : null;
 ---
 
 <span class="lang-switch" aria-label="Idioma">
-  <span class="current" aria-current="true">{locale}</span>
+  <span class="current" aria-current="true">{label[locale]}</span>
   {
     otherHref && (
       <>
         <span class="sep">/</span>
         <a href={otherHref} hreflang={other}>
-          {other}
+          {label[other]}
         </a>
       </>
     )
