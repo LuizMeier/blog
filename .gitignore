@@ -14,6 +14,8 @@ _site
 # NPM dependencies
 node_modules
 package-lock.json
+# exceção: o projeto Astro versiona o lockfile para build reprodutível
+!astro/package-lock.json
 
 # IDE configurations
 .idea

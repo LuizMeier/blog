@@ -12,5 +12,19 @@ services:
       - ../:/var/jekyll
       - bundle_cache:/usr/local/bundle
 
+  astro:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.astro
+    container_name: meiernet-blog-astro
+    working_dir: /app
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "4321:4321"
+    volumes:
+      - ../astro:/app
+      - astro_node_modules:/app/node_modules
+
 volumes:
   bundle_cache:
+  astro_node_modules:
