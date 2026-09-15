@@ -1,0 +1,43 @@
+---
+import { localeUrl } from '../lib/urls';
+import { getPostsByLocale, slugFromId, type Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const posts = await getPostsByLocale(locale);
+const title = locale === 'en' ? 'MeierNet' : 'MeierNet';
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="alternate" type="application/rss+xml" title={title} href={localeUrl(locale, '/rss.xml')} />
+  </head>
+  <body>
+    <header>
+      <h1>{title}</h1>
+    </header>
+    <main>
+      <ul>
+        {
+          posts.map((entry) => {
+            const slug = slugFromId(entry.id);
+            const href = localeUrl(locale, `/posts/${slug}/`);
+            return (
+              <li>
+                <a href={href}>{entry.data.title}</a>
+                <p>{entry.data.description}</p>
+              </li>
+            );
+          })
+        }
+      </ul>
+      {posts.length === 0 && <p>Nenhum post migrado ainda (Fase 3).</p>}
+    </main>
+  </body>
+</html>

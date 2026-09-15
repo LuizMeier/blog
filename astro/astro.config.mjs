@@ -1,26 +1,21 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-import cloudflare from '@astrojs/cloudflare';
-
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
+// Site 100% estático: nenhuma feature de runtime da Cloudflare (KV, Images,
+// SSR sob demanda) é usada hoje, então não há adapter aqui de propósito —
+// o Cloudflare Pages aceita HTML estático puro direto da pasta dist/, sem
+// precisar rodar um Worker por trás.
+//
+// i18n é implementado manualmente (src/lib/urls.ts + estrutura de pastas em
+// src/pages/), sem a config nativa `i18n` do Astro nem `astro:i18n`: a
+// versão 7.3.2 tem um bug conhecido (github.com/withastro/astro/issues/16386)
+// onde uma rota cujo path começa com um código de locale colide
+// incorretamente com a rota do idioma padrão durante o build, descartando o
+// prefixo — reproduzido e documentado em migration/00-inventory.md.
 export default defineConfig({
   site: 'https://blog.lmeier.net',
-  adapter: cloudflare({
-    // site 100% estático (sem KV/Images/bindings) — desliga o runtime local
-    // do Cloudflare (workerd/Miniflare) durante `astro dev`, que não expõe
-    // a porta corretamente rodando dentro de um container Docker
-    platformProxy: { enabled: false }
-  }),
-  integrations: [sitemap()],
-  i18n: {
-    locales: ['en', 'pt-BR'],
-    defaultLocale: 'en',
-    routing: {
-      // mantém o padrão atual: en sem prefixo, pt-BR com prefixo /pt-BR/
-      prefixDefaultLocale: false
-    }
-  }
+  integrations: [sitemap()]
 });

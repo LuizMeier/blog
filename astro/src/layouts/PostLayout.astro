@@ -1,0 +1,64 @@
+---
+import { localeUrl } from '../lib/urls';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  entry: CollectionEntry<'posts'>;
+  locale: Locale;
+  slug: string;
+  translation: CollectionEntry<'posts'> | null;
+}
+
+const { entry, locale, slug, translation } = Astro.props;
+const { title, description, date, author, image, categories, tags } = entry.data;
+
+const path = `/posts/${slug}/`;
+const canonicalUrl = new URL(localeUrl(locale, path), Astro.site);
+const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
+const translationUrl = translation ? new URL(localeUrl(other, path), Astro.site) : null;
+const imageUrl = image ? new URL(image, Astro.site) : null;
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="alternate" hreflang={locale} href={canonicalUrl} />
+    {translationUrl && <link rel="alternate" hreflang={other} href={translationUrl} />}
+    {translationUrl && locale === 'en' && <link rel="alternate" hreflang="x-default" href={canonicalUrl} />}
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <header>
+      <LanguageSwitcher locale={locale} translationPath={translation ? path : null} />
+    </header>
+    <main>
+      <article>
+        <h1>{title}</h1>
+        <p>
+          <time datetime={date.toISOString()}>{date.toLocaleDateString(locale)}</time>
+          {' · '}{author}
+        </p>
+        <p>
+          {categories.map((c) => <span>{c}</span>)}
+        </p>
+        <slot />
+        <footer>
+          <p>{tags.map((t) => <span>#{t}</span>)}</p>
+        </footer>
+      </article>
+    </main>
+  </body>
+</html>

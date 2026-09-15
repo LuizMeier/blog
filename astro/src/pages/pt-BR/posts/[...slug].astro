@@ -1,0 +1,22 @@
+---
+import { render } from 'astro:content';
+import PostLayout from '../../../layouts/PostLayout.astro';
+import { getPostsByLocale, slugFromId, getTranslation } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPostsByLocale('pt-BR');
+  return posts.map((entry) => ({
+    params: { slug: slugFromId(entry.id) },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const slug = slugFromId(entry.id);
+const translation = await getTranslation(entry);
+const { Content } = await render(entry);
+---
+
+<PostLayout entry={entry} locale="pt-BR" slug={slug} translation={translation}>
+  <Content />
+</PostLayout>

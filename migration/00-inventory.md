@@ -85,6 +85,16 @@ Os outros 7 links (Integrating/Integrando Backstage Azure DevOps, Authentication
 
 **Não migrados no Medium** (sem risco de link externo): Zabbix Custom LLD, Monitoring Cluster Shared Volumes, CCTV Camera Recovery.
 
-## 6. Próximo passo
+## 6. Fase 1 — decisões técnicas e uma pegadinha real do Astro
 
-Com este inventário fechado, a Fase 0 segue para o item 3 do roteiro: scaffold do projeto Astro (Content Collections com o schema da seção 1, adapter Cloudflare, i18n nativo com as rotas da seção 2).
+Roteamento, SEO/hreflang e RSS implementados em `astro/src/`. Duas decisões que vale registrar para quem mexer nisso depois:
+
+**Sem adapter Cloudflare.** O scaffold inicial da Fase 0 incluía `@astrojs/cloudflare`, pensando em consistência com o deploy alvo. Removido: o site é 100% estático (sem KV, Images, D1 ou SSR sob demanda), e o adapter tenta subir um runtime local (`workerd`) tanto no `astro dev` quanto no `astro build`, que não expõe a porta corretamente dentro do container Docker. Cloudflare Pages aceita HTML estático puro direto da pasta `dist/`, sem precisar de adapter nenhum — só adicionar de volta se um dia o site precisar de SSR real.
+
+**Sem `i18n` nativo do Astro (`astro:i18n`).** Motivo real, encontrado por baixo de duas horas de investigação: o **glob loader das Content Collections normaliza o `id` do arquivo para minúsculo** — um arquivo em `src/content/posts/pt-BR/algum-slug.md` vira `id: "pt-br/algum-slug"` (minúsculo), não `"pt-BR/algum-slug"`. O código de detecção de idioma (`localeFromId` em `src/lib/posts.ts`) comparava contra `pt-BR/` com maiúscula e nunca batia, então `getStaticPaths()` da rota pt-BR sempre recebia uma lista vazia. Isso se manifestou de formas enganosas — conflito de rotas durante o build, prefixo de URL descartado, 404 mesmo com a rota "encontrada" — que pareciam apontar para bugs no roteamento i18n do Astro (chegou a ser reproduzido um comportamento idêntico a um issue aberto no GitHub do Astro, #16386). A causa raiz não tinha relação com isso; era a comparação de case. A correção foi trivial (`.toLowerCase()` na comparação); o `i18n` nativo do Astro e o helper `getRelativeLocaleUrl` foram removidos porque já não eram necessários, e um helper manual (`src/lib/urls.ts`, `localeUrl(locale, path)`) faz o mesmo com bem menos superfície de comportamento a confiar.
+
+**Lição para a Fase 3 (migração dos 16 posts reais):** qualquer código que compare o idioma a partir do path/id de um arquivo de conteúdo precisa ser case-insensitive, ou usar sempre minúsculo internamente. Os arquivos de conteúdo em si continuam podendo ficar em pastas `en/` e `pt-BR/` no disco — é só o `id` derivado pelo Astro que vem normalizado.
+
+## 7. Próximo passo
+
+Fase 1 concluída. Segue para a Fase 2 (visual): adaptar o tema AstroPaper com a paleta escura/sóbria, protótipo navegável com 2-3 posts reais para aprovação antes de migrar o conteúdo completo.

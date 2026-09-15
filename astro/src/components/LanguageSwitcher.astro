@@ -1,0 +1,28 @@
+---
+import { localeUrl } from '../lib/urls';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+  // path relativo dentro do idioma, ex. "/posts/my-slug/" ou "/"
+  translationPath: string | null;
+}
+
+const { locale, translationPath } = Astro.props;
+const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
+const otherHref = translationPath ? localeUrl(other, translationPath) : null;
+---
+
+<nav aria-label="Idioma">
+  <span aria-current="true">{locale}</span>
+  {
+    otherHref && (
+      <>
+        {' · '}
+        <a href={otherHref} hreflang={other}>
+          {other}
+        </a>
+      </>
+    )
+  }
+</nav>
