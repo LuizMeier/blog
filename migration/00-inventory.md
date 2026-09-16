@@ -131,6 +131,14 @@ Isso é tudo que o Cloudflare precisa — sem `wrangler.toml` no repo, sem secre
 
 Conectar o repositório no dashboard do Cloudflare Pages (se ainda não fez) com a configuração de build da seção 8. Nada a configurar no GitHub para isso — sem secrets.
 
-## 10. Próximo passo
+## 10. Fase 3 completa — paridade de conteúdo e features
 
-Fase 2 (protótipo) aprovada; CI de qualidade pronto. Falta você conectar o repositório no Cloudflare Pages (seção 9). Depois disso: Fase 3 — migração dos 16 posts reais, páginas de tag/categoria completas, giscus, Pagefind, tabela de redirects aplicada.
+Os 16 posts reais estão migrados (`astro/src/content/posts/`), com páginas de tag/categoria individuais, giscus, analytics, busca e a tabela de redirects — ver o commit `b54bf18` para o detalhamento de cada peça. Duas coisas vale registrar aqui:
+
+**Busca (Pagefind) só existe no build de produção.** Ela indexa o HTML já gerado (`pagefind --site dist`, rodando depois do `astro build`), então não há nada para buscar em `astro dev`. Para testar localmente, é preciso `npm run build && npm run preview` (porta 4322, mapeada no `docker-compose.yml` só para isso).
+
+**Giscus valida com a discussão real** — abrir um post no ambiente local já carrega os comentários/reações reais do repositório `luizmeier/giscus`, porque giscus não depende da origem de onde o embed é servido, só do `mapping: pathname` da página. Ou seja: cuidado ao testar localmente em paths que já têm comentários reais — qualquer comentário postado durante testes é real e público.
+
+## 11. Próximo passo
+
+Fase 3 concluída de ponta a ponta: conteúdo, taxonomia, comentários, analytics, busca e redirects. Falta: (a) você conectar o repositório no Cloudflare Pages (seção 9) se ainda não fez; (b) revisão sua do resultado; (c) Fase 4 — corte para produção (checklist de SEO, corte de DNS, desligar o GitHub Pages e os workflows do Jekyll).
