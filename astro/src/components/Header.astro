@@ -12,8 +12,8 @@ interface Props {
 const { locale, translationPath } = Astro.props;
 const t =
   locale === 'en'
-    ? { tags: 'Tags', categories: 'Categories', about: 'About' }
-    : { tags: 'Tags', categories: 'Categorias', about: 'Sobre' };
+    ? { tags: 'Tags', categories: 'Categories', about: 'About', search: 'Search' }
+    : { tags: 'Tags', categories: 'Categorias', about: 'Sobre', search: 'Buscar' };
 ---
 
 <header class="site-header">
@@ -23,6 +23,7 @@ const t =
       <a href={localeUrl(locale, '/tags/')}>{t.tags}</a>
       <a href={localeUrl(locale, '/categories/')}>{t.categories}</a>
       <a href={localeUrl(locale, '/about/')}>{t.about}</a>
+      <a href={localeUrl(locale, '/search/')} aria-label={t.search} title={t.search}>⌕</a>
       <LanguageSwitcher locale={locale} translationPath={translationPath} />
       <ThemeToggle />
     </nav>

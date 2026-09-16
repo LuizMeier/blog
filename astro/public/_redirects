@@ -1,0 +1,23 @@
+# Redirects de URLs antigas do Jekyll/Chirpy, levantadas em migration/00-inventory.md
+# (seção 4). Sintaxe: origem destino código - ver https://developers.cloudflare.com/pages/configuration/redirects/
+
+/posts/creating-your-own-custom-lld-in-zabbix-en/ /posts/creating-your-own-custom-lld-in-zabbix/ 301
+/posts/criando-seu-proprio-lld-personalizado-no-zabbix-pt-BR/ /posts/creating-your-own-custom-lld-in-zabbix/ 301
+/pt-BR/posts/criando-seu-proprio-lld-personalizado-no-zabbix-pt-BR/ /pt-BR/posts/creating-your-own-custom-lld-in-zabbix/ 301
+
+/posts/como-recuperei-uma-camera-cftv-brickada/ /posts/how-i-recovered-a-bricked-cctv-camera/ 301
+/pt-BR/posts/como-recuperei-uma-camera-cftv-brickada/ /pt-BR/posts/how-i-recovered-a-bricked-cctv-camera/ 301
+
+/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/ /posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+/pt-BR/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/ /pt-BR/posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+
+/posts/authentication-backstage-entra-id-en/ /posts/authentication-backstage-entra-id/ 301
+/pt-BR/posts/autenticacao-backstage-entra-id-pt-BR/ /pt-BR/posts/authentication-backstage-entra-id/ 301
+
+/posts/integrating-backstage-azure-devops-en/ /posts/integrating-backstage-azure-devops/ 301
+/posts/integrando-backstage-azure-devops-pt-BR /pt-BR/posts/integrating-backstage-azure-devops/ 301
+/posts/integrando-backstage-azure-devops-pt-BR/ /pt-BR/posts/integrating-backstage-azure-devops/ 301
+/pt-BR/posts/integrando-backstage-azure-devops-pt-BR/ /pt-BR/posts/integrating-backstage-azure-devops/ 301
+
+# Prioridade alta: referenciada ativamente por um post no Medium (medium.lmeier.net)
+/pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto/ /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301

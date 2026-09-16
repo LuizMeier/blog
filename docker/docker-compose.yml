@@ -26,6 +26,9 @@ services:
     command: sh -lc "rm -f .astro/dev.json && npm install && npm run dev -- --host 0.0.0.0"
     ports:
       - "4321:4321"
+      # 4322: `astro preview` (serve dist/ real - necessário para testar o
+      # Pagefind, que só existe no build, não no dev server)
+      - "4322:4322"
     volumes:
       - ../astro:/app
       - astro_node_modules:/app/node_modules

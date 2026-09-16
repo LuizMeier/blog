@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 import type { Locale } from '../lib/posts';
 
@@ -28,11 +29,12 @@ const { locale, title, description, translationPath, canonicalUrl } = Astro.prop
         if (stored) document.documentElement.setAttribute('data-theme', stored);
       })();
     </script>
+    {import.meta.env.PROD && <Analytics />}
     <slot name="head" />
   </head>
   <body>
     <Header locale={locale} translationPath={translationPath} />
-    <main>
+    <main data-pagefind-body>
       <slot />
     </main>
     <Footer locale={locale} />

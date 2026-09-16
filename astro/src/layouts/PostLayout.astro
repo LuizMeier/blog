@@ -1,5 +1,6 @@
 ---
 import Base from './Base.astro';
+import Comments from '../components/Comments.astro';
 import { localeUrl } from '../lib/urls';
 import { slugify } from '../lib/taxonomy';
 import type { CollectionEntry } from 'astro:content';
@@ -72,6 +73,8 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
         </a>
       ))}
     </footer>
+
+    <Comments locale={locale} />
   </article>
 </Base>
 
