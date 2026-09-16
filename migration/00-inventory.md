@@ -107,13 +107,19 @@ Protótipo em `astro/src/`, com 3 posts reais migrados como fixture de validaç�
 
 **Achado de ambiente, não de código:** o Astro grava o PID do processo de dev em `.astro/dev.json` para detectar uma segunda instância já rodando. Como cada container Docker reinicia a numeração de PID do zero, um container recriado frequentemente "colide" por coincidência com o PID salvo de uma execução anterior, e o Astro recusa subir — sem erro visível, a porta simplesmente não responde (sintoma: `curl` trava ou dá connection reset). Isso explica boa parte da instabilidade enfrentada ao iterar nesta sessão. Corrigido de forma permanente em `docker/docker-compose.yml`: o comando do serviço `astro` agora remove esse arquivo antes de cada `npm run dev`.
 
-## 8. CI/CD — deploy no Cloudflare Pages via GitHub Actions
+## 8. CI/CD — qualidade em PR, deploy é a integração nativa do Cloudflare Pages
 
-Decisão: deploy orquestrado pelo GitHub Actions (`wrangler pages deploy`), não pela integração nativa Git do dashboard Cloudflare — mantém tudo sob controle do repositório, junto das pipelines de qualidade já existentes.
+Deploy **não** é feito por um workflow do GitHub Actions — é a integração nativa Git do Cloudflare Pages (configurada no dashboard, não no repositório) que builda e publica a cada push em `main`. Cheguei a criar um workflow próprio (`wrangler pages deploy` via Actions) por engano, entendendo errado o pedido; removido, porque duplicava o que a integração nativa já faz — e pior, sem o preview deploy automático por PR que ela dá de graça.
 
-- **`astro/wrangler.toml`** — `pages_build_output_dir = "dist"`, `name = "blog-lmeier"`. Sem `compatibility_flags`/bindings: o site é estático, sem adapter (decisão da Fase 1).
-- **`.github/workflows/cloudflare-deploy.yml`** — dispara em `push` para `main`, filtrado por `paths: astro/**`. Builda e roda `wrangler pages deploy` via `cloudflare/wrangler-action@v3`. Precisa dos secrets `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` no repositório (ver seção 9).
-- **`.github/workflows/astro-ci.yml`** — dispara em `pull_request`, filtrado por `paths: astro/**`. Roda `astro check` (type-check), `npm run build`, e `linkinator` contra o build para pegar links internos quebrados antes do merge.
+**Configuração do lado Cloudflare** (feita no dashboard, fora do repositório):
+- Root directory: `astro`
+- Build command: `npm run build`
+- Build output directory: `dist`
+
+Isso é tudo que o Cloudflare precisa — sem `wrangler.toml` no repo, sem secrets de API token no GitHub. Cada PR ganha automaticamente uma URL de preview própria, sem nenhuma configuração extra da minha parte.
+
+**O que fica do lado GitHub Actions** (checks de qualidade, gate antes do merge — não deploy):
+- **`.github/workflows/astro-ci.yml`** — dispara em `pull_request`, filtrado por `paths: astro/**`. Roda `astro check` (type-check), `npm run build`, e `linkinator` contra o build para pegar links internos quebrados. Complementa o preview deploy do Cloudflare: um valida que o código está correto, o outro te dá uma URL pra olhar o resultado.
 - **`dependabot.yml`** — nova entrada `npm` com `directory: "/astro"`; sem isso o Dependabot nunca abriria PR para as dependências do projeto novo.
 - **Workflows do Jekyll** (`html-proofer.yaml`, `pages-deploy.yml`) ganharam `astro/**` e `migration/**` no `paths-ignore` — evita builds do Jekyll disparados à toa por commits que só tocam o projeto novo.
 - **`markdown-lint.yaml`** — corrigido um bug pré-existente (glob `_posts/*.md` sem `**`, nunca pegava os posts que ficam em subpastas `en/`/`pt-BR/`) e adicionado o novo caminho de conteúdo.
@@ -121,15 +127,10 @@ Decisão: deploy orquestrado pelo GitHub Actions (`wrangler pages deploy`), não
 
 **Achado durante a validação:** `medium.lmeier.net` retorna 403 para requisições automatizadas (bloqueio anti-bot do Medium), mesmo sendo um link válido — confirmado manualmente. O `linkinator` no CI ignora esse domínio explicitamente para não gerar falso positivo a cada PR.
 
-## 9. Pendência sua: secrets do GitHub
+## 9. Pendência sua, do lado Cloudflare
 
-O workflow de deploy só funciona depois que você adicionar dois secrets no repositório (Settings → Secrets and variables → Actions → New repository secret) — isso não é algo que eu deveria fazer por você, envolve credenciais da sua conta Cloudflare:
-
-- `CLOUDFLARE_API_TOKEN` — em Cloudflare Dashboard → My Profile → API Tokens → Create Token, com permissão de "Edit Cloudflare Pages".
-- `CLOUDFLARE_ACCOUNT_ID` — visível na barra lateral direita de qualquer página do dashboard Cloudflare, ou em Workers & Pages → Overview.
-
-Se o projeto `blog-lmeier` ainda não existir no Cloudflare Pages, o primeiro `wrangler pages deploy` já cria automaticamente.
+Conectar o repositório no dashboard do Cloudflare Pages (se ainda não fez) com a configuração de build da seção 8. Nada a configurar no GitHub para isso — sem secrets.
 
 ## 10. Próximo passo
 
-Fase 2 (protótipo) aprovada; CI/CD pronto. Falta você configurar os secrets acima. Depois disso: Fase 3 — migração dos 16 posts reais, páginas de tag/categoria completas, giscus, Pagefind, tabela de redirects aplicada.
+Fase 2 (protótipo) aprovada; CI de qualidade pronto. Falta você conectar o repositório no Cloudflare Pages (seção 9). Depois disso: Fase 3 — migração dos 16 posts reais, páginas de tag/categoria completas, giscus, Pagefind, tabela de redirects aplicada.
