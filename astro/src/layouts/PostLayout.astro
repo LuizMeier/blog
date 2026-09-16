@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 import { localeUrl } from '../lib/urls';
+import { slugify } from '../lib/taxonomy';
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../lib/posts';
 
@@ -51,7 +52,7 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
   <article class="wrap post">
     <header class="post-head">
       <div class="meta">
-        <span class="category">{categories[0]}</span>
+        <a class="category" href={localeUrl(locale, `/categories/${slugify(categories[0])}/`)}>{categories[0]}</a>
         <time datetime={date.toISOString()}>{dateFmt}</time>
       </div>
       <h1>{title}</h1>
@@ -65,7 +66,11 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
     </div>
 
     <footer class="post-foot">
-      {tags.map((t) => <span class="tag">#{t}</span>)}
+      {tags.map((t) => (
+        <a class="tag" href={localeUrl(locale, `/tags/${slugify(t)}/`)}>
+          #{t}
+        </a>
+      ))}
     </footer>
   </article>
 </Base>

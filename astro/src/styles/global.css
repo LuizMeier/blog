@@ -138,6 +138,12 @@ blockquote {
   border: 1px solid var(--color-border);
   border-radius: 4px;
   padding: 2px 8px;
+  text-decoration: none;
+}
+a.tag:hover,
+a.category:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .mermaid-diagram {

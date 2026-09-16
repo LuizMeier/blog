@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+  name: string;
+  posts: CollectionEntry<'posts'>[];
+  translationPath: string | null;
+  kicker: string;
+}
+
+const { locale, name, posts, translationPath, kicker } = Astro.props;
+---
+
+<Base locale={locale} title={`${name} · Luiz Meier`} description={name} translationPath={translationPath}>
+  <div class="wrap page">
+    <p class="kicker">{kicker}</p>
+    <h1>{name}</h1>
+    <div class="posts">
+      {posts.map((entry) => <PostCard entry={entry} locale={locale} />)}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: 32px 48px;
+  }
+  .kicker {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-muted-fg);
+    margin: 0;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin: 4px 0 24px;
+  }
+  .posts {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

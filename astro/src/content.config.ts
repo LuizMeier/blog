@@ -13,7 +13,9 @@ import { z } from 'astro/zod';
 // prefixo de data e vira a URL final (/posts/{slug}/ em en,
 // /pt-BR/posts/{slug}/ em pt-BR), igual ao site atual.
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  // .mdx só onde o post usa componentes (ex. <Callout>) - a maioria fica
+  // .md puro.
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),

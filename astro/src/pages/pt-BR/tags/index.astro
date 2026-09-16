@@ -1,13 +1,8 @@
 ---
 import Base from '../../../layouts/Base.astro';
-import { getPostsByLocale } from '../../../lib/posts';
+import { getTags } from '../../../lib/taxonomy';
 
-const posts = await getPostsByLocale('pt-BR');
-const counts = new Map<string, number>();
-for (const p of posts) {
-  for (const t of p.data.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
-}
-const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+const tags = await getTags('pt-BR');
 ---
 
 <Base locale="pt-BR" title="Tags · Luiz Meier" description="Todas as tags" translationPath="/tags/">
@@ -15,10 +10,10 @@ const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
     <h1>Tags</h1>
     <div class="cloud">
       {
-        tags.map(([tag, count]) => (
-          <span class="tag">
-            {tag} <small>{count}</small>
-          </span>
+        tags.map((t) => (
+          <a class="tag" href={`/pt-BR/tags/${t.slug}/`}>
+            {t.name} <small>{t.posts.length}</small>
+          </a>
         ))
       }
     </div>
@@ -37,6 +32,13 @@ const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 20px;
+  }
+  a.tag {
+    text-decoration: none;
+  }
+  a.tag:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
   .tag small {
     color: var(--color-muted-fg);

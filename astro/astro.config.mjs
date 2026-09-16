@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 
 import sitemap from '@astrojs/sitemap';
 
+import mdx from '@astrojs/mdx';
+
 // https://astro.build/config
 // Site 100% estático: nenhuma feature de runtime da Cloudflare (KV, Images,
 // SSR sob demanda) é usada hoje, então não há adapter aqui de propósito —
@@ -17,5 +19,5 @@ import sitemap from '@astrojs/sitemap';
 // prefixo — reproduzido e documentado em migration/00-inventory.md.
 export default defineConfig({
   site: 'https://blog.lmeier.net',
-  integrations: [sitemap()]
+  integrations: [sitemap(), mdx()]
 });
