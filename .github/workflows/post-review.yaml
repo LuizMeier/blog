@@ -6,7 +6,9 @@ permissions:
 
 on:
   pull_request:
-    paths: '**/_posts/**/*.md'
+    paths:
+      - '**/_posts/**/*.md'
+      - 'astro/src/content/posts/**/*.md'
 
 jobs:
   review:

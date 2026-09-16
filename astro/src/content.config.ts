@@ -1,5 +1,6 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 // Schema derivado do inventário de front matter do blog atual
 // (migration/00-inventory.md, seção 1). Datas e nomes de autor são

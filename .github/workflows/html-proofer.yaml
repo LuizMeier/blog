@@ -15,7 +15,9 @@ on:
       - "docs/**"
       - README.md
       - LICENSE
-      
+      - "astro/**"
+      - "migration/**"
+
 jobs:
   html-proofer:
     runs-on: ubuntu-latest

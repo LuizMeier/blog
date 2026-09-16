@@ -1,0 +1,7 @@
+name = "blog-lmeier"
+compatibility_date = "2026-09-16"
+
+# Site 100% estático (sem adapter, sem bindings — ver astro.config.mjs).
+# Usado pelo comando `wrangler pages deploy`, tanto localmente quanto no
+# workflow .github/workflows/cloudflare-deploy.yml.
+pages_build_output_dir = "dist"

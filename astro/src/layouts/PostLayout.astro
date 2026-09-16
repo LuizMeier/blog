@@ -45,7 +45,7 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
     <meta property="og:url" content={canonicalUrl} />
     {imageUrl && <meta property="og:image" content={imageUrl} />}
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="module" src="/scripts/mermaid.js"></script>
+    <script is:inline type="module" src="/scripts/mermaid.js"></script>
   </Fragment>
 
   <article class="wrap post">

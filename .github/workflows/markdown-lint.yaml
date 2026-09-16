@@ -21,6 +21,9 @@ jobs:
       - name: Run markdownlint
         uses: docker://davidanson/markdownlint-cli2
         with:
-          args: "_posts/*.md"
+          # "_posts/*.md" (sem **) nunca pegava nada, já que os posts ficam
+          # em _posts/en/*.md e _posts/pt-BR/*.md - corrigido junto com a
+          # adição do novo local de conteúdo em astro/.
+          args: "_posts/**/*.md astro/src/content/posts/**/*.md"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
