@@ -73,15 +73,25 @@ A entrada em negrito é a que o Medium referencia ativamente hoje (ver seção 5
 
 ## 5. Links externos confirmados (Medium)
 
-Seu Medium está em **`medium.lmeier.net`** (domínio customizado) — não `medium.com/LuizMeier`, que não tem posts publicados. 5 dos 16 posts foram cross-postados lá (10 URLs no Medium, 4 pares + verificação extra), cada um com um link de volta para uma URL específica do blog, confirmado inspecionando os links reais de 3 amostras:
+Seu Medium está em **`medium.lmeier.net`** (domínio customizado) — não `medium.com/LuizMeier`, que não tem posts publicados. 5 dos 16 posts foram cross-postados lá (10 URLs no Medium, 4 pares + verificação extra).
 
-| Post | URL referenciada pelo Medium | Status |
+**Atualização pós-deploy: os 10 links foram verificados um a um contra o domínio em produção** (não só 3 por amostragem, como na Fase 0) — 2 dos 10 posts do Medium têm links de volta duplicados (uma referência cruzada para outro post dentro do texto, além do link principal), totalizando 12 URLs reais testadas:
+
+| URL referenciada pelo Medium | Resultado antes da correção | Causa |
 |---|---|---|
-| How I built my first MCP for DNS operations (en) | `/posts/how-i-built-my-first-mcp-for-dns-operations/` | é a URL atual |
-| Como construí meu primeiro MCP... (pt-BR) | `/pt-BR/posts/how-i-built-my-first-mcp-for-dns-operations/` | é a URL atual |
-| Usando API para Monitorar IPSec da Palo Alto (pt-BR) | `/pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto/` | **URL antiga — só funciona via redirect hoje** |
+| `/posts/how-i-built-my-first-mcp-for-dns-operations/` | 200 (já atual) | — |
+| `/pt-BR/posts/how-i-built-my-first-mcp-for-dns-operations/` | 200 (já atual) | — |
+| `/pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto/` | 301 correto | coberta desde a Fase 0 |
+| `/posts/integrating-backstage-azure-devops-en/` | 301 correto | coberta desde a Fase 0 |
+| `/posts/integrando-backstage-azure-devops-pt-BR/` | 301 correto | coberta desde a Fase 0 |
+| `/posts/authentication-backstage-entra-id-en/` (com barra) | 301 correto | coberta desde a Fase 0 |
+| `/posts/monitoring-palo-alto-firewalls-using-api/` | 200 (já atual) | — |
+| **`/posts/authentication-backstage-entra-id-en` (sem barra)** | **404** | referência cruzada dentro do post de Azure DevOps, nunca mapeada — Cloudflare `_redirects` faz match exato, sem/com barra são paths diferentes |
+| **`/posts/autenticacao-backstage-entra-id-pt-BR/` (sem prefixo `/pt-BR/`)** | **404** | afeta 2 links reais (principal do post Entra ID pt-BR + referência cruzada dentro do post Azure DevOps pt-BR). O `redirect_from` original do Jekyll só cobria a variante *com* prefixo `/pt-BR/` — esse link provavelmente **já estava quebrado no site atual também**, não é regressão da migração |
+| **`/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/`** | **301 para URL errada** | redirecionava um post em português para a versão em **inglês** — erro meu na tabela original da Fase 0 |
+| **`/posts/fortinet-vs-palo-alto-automating-load-balancing/` (hífen simples)** | **404** | o slug atual usa hífen duplo (`fortinet-vs--palo-alto--automating-load-balancing`); essa variante nunca foi cadastrada |
 
-Os outros 7 links (Integrating/Integrando Backstage Azure DevOps, Authentication/Autenticação Backstage Entra ID, Fortinet vs Palo Alto en/pt-BR) não foram abertos individualmente, mas seguem o mesmo padrão de link único por post — cobertos pela tabela de redirects da seção 4, que já inclui todas as variantes antigas desses mesmos posts.
+As 4 falhas foram corrigidas em `astro/public/_redirects` — e, por segurança, toda entrada da tabela agora existe em duas versões (com e sem barra final), já que se provou ser uma causa real de 404, não só teórica. Validado de novo: build copia as 56 linhas para `dist/_redirects` corretamente.
 
 **Não migrados no Medium** (sem risco de link externo): Zabbix Custom LLD, Monitoring Cluster Shared Volumes, CCTV Camera Recovery.
 
