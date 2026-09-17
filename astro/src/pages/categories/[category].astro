@@ -1,0 +1,19 @@
+---
+import TaxonomyListPage from '../../components/TaxonomyListPage.astro';
+import { getCategories } from '../../lib/taxonomy';
+
+export async function getStaticPaths() {
+  const categories = await getCategories('en');
+  return categories.map((c) => ({ params: { category: c.slug }, props: c }));
+}
+
+const { name, posts, slug } = Astro.props;
+---
+
+<TaxonomyListPage
+  locale="en"
+  name={name}
+  posts={posts}
+  translationPath={`/categories/${slug}/`}
+  kicker="Category"
+/>

@@ -12,6 +12,8 @@ on:
       - "docs/**"
       - README.md
       - LICENSE
+      - "astro/**"
+      - "migration/**"
 
 permissions:
   contents: read

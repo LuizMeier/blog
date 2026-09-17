@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import { getPostsByLocale, type Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const posts = await getPostsByLocale(locale);
+const t =
+  locale === 'en'
+    ? { tagline: 'Exploring Tech, One Packet at a Time', empty: 'No posts migrated yet.' }
+    : { tagline: 'Explorando tecnologia, um pacote de cada vez', empty: 'Nenhum post migrado ainda.' };
+---
+
+<Base locale={locale} title="Luiz Meier" description={t.tagline} translationPath="/">
+  <Fragment slot="head">
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Luiz Meier"
+      href={locale === 'en' ? '/rss.xml' : '/pt-BR/rss.xml'}
+    />
+  </Fragment>
+
+  <div class="wrap list">
+    <p class="tagline">{t.tagline}</p>
+    <div class="posts">
+      {posts.map((entry) => <PostCard entry={entry} locale={locale} />)}
+      {posts.length === 0 && <p class="empty">{t.empty}</p>}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .list {
+    padding-block: 28px 48px;
+  }
+  .tagline {
+    font-family: var(--font-display);
+    color: var(--color-muted-fg);
+    font-size: 0.9rem;
+    margin: 0 0 24px;
+  }
+  .posts {
+    display: flex;
+    flex-direction: column;
+  }
+  .empty {
+    color: var(--color-muted-fg);
+    padding-block: 24px;
+  }
+</style>

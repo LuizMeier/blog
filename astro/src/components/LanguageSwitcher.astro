@@ -1,0 +1,51 @@
+---
+import { localeUrl } from '../lib/urls';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+  // path relativo dentro do idioma, ex. "/posts/my-slug/" ou "/"
+  translationPath: string | null;
+}
+
+const label: Record<Locale, string> = { en: 'English', 'pt-BR': 'Português' };
+
+const { locale, translationPath } = Astro.props;
+const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
+const otherHref = translationPath ? localeUrl(other, translationPath) : null;
+---
+
+<span class="lang-switch" aria-label="Idioma">
+  <span class="current" aria-current="true">{label[locale]}</span>
+  {
+    otherHref && (
+      <>
+        <span class="sep">/</span>
+        <a href={otherHref} hreflang={other}>
+          {label[other]}
+        </a>
+      </>
+    )
+  }
+</span>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .current {
+    color: var(--color-fg);
+  }
+  .sep {
+    color: var(--color-border);
+  }
+  .lang-switch a {
+    color: var(--color-muted-fg);
+    text-decoration: none;
+  }
+  .lang-switch a:hover {
+    color: var(--color-fg);
+  }
+</style>

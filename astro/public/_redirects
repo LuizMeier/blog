@@ -1,0 +1,56 @@
+# Redirects de URLs antigas do Jekyll/Chirpy, levantadas em migration/00-inventory.md
+# (seção 4) e verificadas contra os 10 links reais dos posts no Medium
+# (medium.lmeier.net). Sintaxe: origem destino código - ver
+# https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# Cada URL antiga aparece com e sem barra final: o Cloudflare faz match
+# exato de path, e a verificação contra o Medium mostrou variantes reais
+# dos dois tipos (ex. o link para o post de Entra ID em inglês usa a URL
+# sem barra final).
+
+/posts/creating-your-own-custom-lld-in-zabbix-en /posts/creating-your-own-custom-lld-in-zabbix/ 301
+/posts/creating-your-own-custom-lld-in-zabbix-en/ /posts/creating-your-own-custom-lld-in-zabbix/ 301
+/posts/criando-seu-proprio-lld-personalizado-no-zabbix-pt-BR /posts/creating-your-own-custom-lld-in-zabbix/ 301
+/posts/criando-seu-proprio-lld-personalizado-no-zabbix-pt-BR/ /posts/creating-your-own-custom-lld-in-zabbix/ 301
+/pt-BR/posts/criando-seu-proprio-lld-personalizado-no-zabbix-pt-BR /pt-BR/posts/creating-your-own-custom-lld-in-zabbix/ 301
+/pt-BR/posts/criando-seu-proprio-lld-personalizado-no-zabbix-pt-BR/ /pt-BR/posts/creating-your-own-custom-lld-in-zabbix/ 301
+
+/posts/como-recuperei-uma-camera-cftv-brickada /posts/how-i-recovered-a-bricked-cctv-camera/ 301
+/posts/como-recuperei-uma-camera-cftv-brickada/ /posts/how-i-recovered-a-bricked-cctv-camera/ 301
+/pt-BR/posts/como-recuperei-uma-camera-cftv-brickada /pt-BR/posts/how-i-recovered-a-bricked-cctv-camera/ 301
+/pt-BR/posts/como-recuperei-uma-camera-cftv-brickada/ /pt-BR/posts/how-i-recovered-a-bricked-cctv-camera/ 301
+
+# Confirmado no Medium: link real é a versão pt-BR SEM prefixo /pt-BR/ na
+# origem, e precisa apontar para a versão pt-BR do post atual (não a en -
+# esse era o destino errado na primeira versão desta tabela).
+/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga /pt-BR/posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/ /pt-BR/posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+/pt-BR/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga /pt-BR/posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+/pt-BR/posts/fortinet-vs-palo-alto-automatizando-balanceamento-de-carga/ /pt-BR/posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+# Confirmado no Medium: link real da versão en usa hífen simples
+# ("vs-palo"), o slug atual usa hífen duplo ("vs--palo").
+/posts/fortinet-vs-palo-alto-automating-load-balancing /posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+/posts/fortinet-vs-palo-alto-automating-load-balancing/ /posts/fortinet-vs--palo-alto--automating-load-balancing/ 301
+
+/posts/authentication-backstage-entra-id-en /posts/authentication-backstage-entra-id/ 301
+/posts/authentication-backstage-entra-id-en/ /posts/authentication-backstage-entra-id/ 301
+# Confirmado no Medium: link real (tanto o principal do post pt-BR quanto
+# uma referência cruzada dentro do post de Azure DevOps) usa a URL SEM
+# prefixo /pt-BR/ - diferente do redirect_from original do Jekyll, que
+# só cobria a variante com prefixo. Esse link provavelmente já estava
+# quebrado no site atual também, não é regressão da migração.
+/posts/autenticacao-backstage-entra-id-pt-BR /pt-BR/posts/authentication-backstage-entra-id/ 301
+/posts/autenticacao-backstage-entra-id-pt-BR/ /pt-BR/posts/authentication-backstage-entra-id/ 301
+/pt-BR/posts/autenticacao-backstage-entra-id-pt-BR /pt-BR/posts/authentication-backstage-entra-id/ 301
+/pt-BR/posts/autenticacao-backstage-entra-id-pt-BR/ /pt-BR/posts/authentication-backstage-entra-id/ 301
+
+/posts/integrating-backstage-azure-devops-en /posts/integrating-backstage-azure-devops/ 301
+/posts/integrating-backstage-azure-devops-en/ /posts/integrating-backstage-azure-devops/ 301
+/posts/integrando-backstage-azure-devops-pt-BR /pt-BR/posts/integrating-backstage-azure-devops/ 301
+/posts/integrando-backstage-azure-devops-pt-BR/ /pt-BR/posts/integrating-backstage-azure-devops/ 301
+/pt-BR/posts/integrando-backstage-azure-devops-pt-BR /pt-BR/posts/integrating-backstage-azure-devops/ 301
+/pt-BR/posts/integrando-backstage-azure-devops-pt-BR/ /pt-BR/posts/integrating-backstage-azure-devops/ 301
+
+# Prioridade alta: referenciada ativamente por um post no Medium (medium.lmeier.net)
+/pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301
+/pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto/ /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301

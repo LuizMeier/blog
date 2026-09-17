@@ -21,6 +21,9 @@ jobs:
       - name: Run markdownlint
         uses: docker://davidanson/markdownlint-cli2
         with:
-          args: "_posts/*.md"
+          # _posts/**/*.md (Jekyll) removido do lint: esses arquivos vão ser
+          # excluídos do repo na Fase 4 (migração completa para astro/), não
+          # vale corrigir formatação em conteúdo que já tem vida curta.
+          args: "astro/src/content/posts/**/*.md astro/src/content/posts/**/*.mdx"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

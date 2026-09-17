@@ -12,5 +12,27 @@ services:
       - ../:/var/jekyll
       - bundle_cache:/usr/local/bundle
 
+  astro:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.astro
+    container_name: meiernet-blog-astro
+    working_dir: /app
+    # rm -f .astro/dev.json: o Astro grava o PID do processo anterior nesse
+    # arquivo para detectar um dev server já rodando. Como cada container
+    # reinicia a numeração de PID do zero, um novo processo pode coincidir
+    # com o PID salvo e o Astro recusa subir (achando que já está rodando),
+    # travando a porta silenciosamente sem erro claro.
+    command: sh -lc "rm -f .astro/dev.json && npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "4321:4321"
+      # 4322: `astro preview` (serve dist/ real - necessário para testar o
+      # Pagefind, que só existe no build, não no dev server)
+      - "4322:4322"
+    volumes:
+      - ../astro:/app
+      - astro_node_modules:/app/node_modules
+
 volumes:
   bundle_cache:
+  astro_node_modules:

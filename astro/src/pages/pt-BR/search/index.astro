@@ -1,0 +1,46 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base locale="pt-BR" title="Busca · Luiz Meier" description="Buscar posts" translationPath="/search/">
+  <div class="wrap page">
+    <h1>Busca</h1>
+    <div id="search"></div>
+    <p class="note">
+      A busca só funciona no site publicado (não no ambiente de dev local) - ela é gerada a partir do build estático.
+    </p>
+  </div>
+</Base>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof PagefindUI !== 'undefined') {
+      new PagefindUI({ element: '#search', showSubResults: true, language: 'pt-br' });
+    }
+  });
+</script>
+
+<style>
+  .page {
+    padding-block: 32px 56px;
+    /* integra o Pagefind UI com os tokens de tema do site */
+    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-text: var(--color-fg);
+    --pagefind-ui-background: var(--color-bg);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-tag: var(--color-muted);
+    --pagefind-ui-font: var(--font-body);
+    --pagefind-ui-border-radius: 6px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  .note {
+    margin-top: 16px;
+    font-size: 0.82rem;
+    color: var(--color-muted-fg);
+  }
+</style>

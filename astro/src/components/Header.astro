@@ -1,0 +1,65 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { localeUrl } from '../lib/urls';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+  translationPath: string | null;
+}
+
+const { locale, translationPath } = Astro.props;
+const t =
+  locale === 'en'
+    ? { tags: 'Tags', categories: 'Categories', about: 'About', search: 'Search' }
+    : { tags: 'Tags', categories: 'Categorias', about: 'Sobre', search: 'Buscar' };
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={localeUrl(locale, '/')}>Luiz Meier</a>
+    <nav class="nav">
+      <a href={localeUrl(locale, '/tags/')}>{t.tags}</a>
+      <a href={localeUrl(locale, '/categories/')}>{t.categories}</a>
+      <a href={localeUrl(locale, '/about/')}>{t.about}</a>
+      <a href={localeUrl(locale, '/search/')} aria-label={t.search} title={t.search}>⌕</a>
+      <LanguageSwitcher locale={locale} translationPath={translationPath} />
+      <ThemeToggle locale={locale} />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 16px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+  }
+  .nav a {
+    text-decoration: none;
+    color: var(--color-muted-fg);
+  }
+  .nav a:hover {
+    color: var(--color-fg);
+  }
+</style>

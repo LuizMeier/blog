@@ -1,0 +1,54 @@
+---
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const label = locale === 'en' ? 'Toggle light/dark theme' : 'Alternar tema claro/escuro';
+---
+
+<button id="theme-toggle" type="button" aria-label={label}>
+  <span class="sun" aria-hidden="true">☀</span>
+  <span class="moon" aria-hidden="true">☾</span>
+</button>
+
+<style>
+  #theme-toggle {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    color: var(--color-fg);
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  #theme-toggle .moon {
+    display: none;
+  }
+  :root[data-theme="dark"] #theme-toggle .sun {
+    display: none;
+  }
+  :root[data-theme="dark"] #theme-toggle .moon {
+    display: inline;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // data-theme inicial já é aplicado no <head> (Base.astro), antes do
+    // primeiro paint, para evitar flash do tema errado.
+    document.getElementById("theme-toggle")?.addEventListener("click", () => {
+      const current =
+        document.documentElement.getAttribute("data-theme") ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    });
+  })();
+</script>

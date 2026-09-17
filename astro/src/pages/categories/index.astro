@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCategories } from '../../lib/taxonomy';
+
+const categories = await getCategories('en');
+---
+
+<Base locale="en" title="Categories · Luiz Meier" description="All categories" translationPath="/categories/">
+  <div class="wrap page">
+    <h1>Categories</h1>
+    <ul class="list">
+      {
+        categories.map((c) => (
+          <li>
+            <a class="category" href={`/categories/${c.slug}/`}>
+              {c.name}
+            </a>{' '}
+            <small>{c.posts.length}</small>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: 32px 56px;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+  .list {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  a.category {
+    text-decoration: none;
+  }
+  a.category:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .list small {
+    color: var(--color-muted-fg);
+  }
+</style>

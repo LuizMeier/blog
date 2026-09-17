@@ -1,0 +1,53 @@
+---
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section class="comments">
+  <div id="giscus-container"></div>
+</section>
+
+<script is:inline define:vars={{ locale }}>
+  function currentTheme() {
+    const attr = document.documentElement.getAttribute('data-theme');
+    if (attr) return attr;
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  const script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', 'luizmeier/giscus');
+  script.setAttribute('data-repo-id', 'R_kgDOODON5Q');
+  script.setAttribute('data-category', 'General');
+  script.setAttribute('data-category-id', 'DIC_kwDOODON5c4CnkCv');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-input-position', 'bottom');
+  script.setAttribute('data-theme', currentTheme());
+  script.setAttribute('data-lang', locale);
+  script.crossOrigin = 'anonymous';
+  script.async = true;
+  document.getElementById('giscus-container')?.appendChild(script);
+
+  // mantem o tema dos comentarios sincronizado com o toggle claro/escuro
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    setTimeout(() => {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      iframe?.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme: currentTheme() } } },
+        'https://giscus.app'
+      );
+    }, 0);
+  });
+</script>
+
+<style>
+  .comments {
+    margin-top: 40px;
+  }
+</style>

@@ -235,7 +235,7 @@ compress_html:
   ignore:
     envs: [development]
 
-exclude: 
+exclude:
   - \*.gem
   - \*.gemspec
   - docs
@@ -245,6 +245,11 @@ exclude:
   - purgecss.js
   - rollup.config.js
   - "package*.json"
+  # site novo em Astro, convive com o Jekyll até a Fase 4 (corte final) -
+  # sem isso, o Jekyll tenta ler o "---" de abertura dos componentes .astro
+  # como front matter YAML e quebra o build (era código TS/JS, não YAML).
+  - astro
+  - migration
 
 jekyll-archives:
   enabled: [categories, tags]

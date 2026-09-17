@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getTags } from '../../lib/taxonomy';
+
+const tags = await getTags('en');
+---
+
+<Base locale="en" title="Tags · Luiz Meier" description="All tags" translationPath="/tags/">
+  <div class="wrap page">
+    <h1>Tags</h1>
+    <div class="cloud">
+      {
+        tags.map((t) => (
+          <a class="tag" href={`/tags/${t.slug}/`}>
+            {t.name} <small>{t.posts.length}</small>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: 32px 56px;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+  .cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  a.tag {
+    text-decoration: none;
+  }
+  a.tag:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .tag small {
+    color: var(--color-muted-fg);
+  }
+</style>

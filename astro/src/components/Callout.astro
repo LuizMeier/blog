@@ -1,0 +1,68 @@
+---
+interface Props {
+  type?: 'info' | 'tip' | 'warning' | 'danger';
+}
+
+const { type = 'info' } = Astro.props;
+const icon = { info: 'ℹ', tip: '☞', warning: '▲', danger: '✕' }[type];
+---
+
+<div class={`callout callout-${type}`}>
+  <span class="icon" aria-hidden="true">{icon}</span>
+  <div class="content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .callout {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border: 1px solid var(--color-border);
+    border-inline-start-width: 3px;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-block: 1.5em;
+    background: var(--color-muted);
+  }
+  .icon {
+    flex: none;
+    font-family: var(--font-display);
+    line-height: 1.5;
+  }
+  .content :global(p) {
+    margin: 0;
+  }
+  .content :global(p + p) {
+    margin-top: 0.6em;
+  }
+
+  .callout-info {
+    border-inline-start-color: var(--color-accent);
+  }
+  .callout-info .icon {
+    color: var(--color-accent);
+  }
+
+  .callout-tip {
+    border-inline-start-color: var(--color-ok);
+  }
+  .callout-tip .icon {
+    color: var(--color-ok);
+  }
+
+  .callout-warning {
+    border-inline-start-color: #c99a3f;
+  }
+  .callout-warning .icon {
+    color: #c99a3f;
+  }
+
+  .callout-danger {
+    border-inline-start-color: #c05a4a;
+  }
+  .callout-danger .icon {
+    color: #c05a4a;
+  }
+</style>

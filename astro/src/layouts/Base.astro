@@ -1,0 +1,51 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import '../styles/global.css';
+import { localeUrl } from '../lib/urls';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  translationPath: string | null;
+  canonicalUrl?: URL;
+}
+
+const { locale, title, description, translationPath, canonicalUrl } = Astro.props;
+
+const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
+const selfUrl = canonicalUrl ?? new URL(localeUrl(locale, translationPath ?? '/'), Astro.site);
+const translationUrl = translationPath ? new URL(localeUrl(other, translationPath), Astro.site) : null;
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    {translationPath && <link rel="alternate" hreflang={locale} href={selfUrl} />}
+    {translationUrl && <link rel="alternate" hreflang={other} href={translationUrl} />}
+    {translationUrl && locale === 'en' && <link rel="alternate" hreflang="x-default" href={selfUrl} />}
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem('theme');
+        if (stored) document.documentElement.setAttribute('data-theme', stored);
+      })();
+    </script>
+    {import.meta.env.PROD && <Analytics />}
+    <slot name="head" />
+  </head>
+  <body>
+    <Header locale={locale} translationPath={translationPath} />
+    <main data-pagefind-body>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

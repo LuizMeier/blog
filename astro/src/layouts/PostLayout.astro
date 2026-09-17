@@ -1,0 +1,140 @@
+---
+import Base from './Base.astro';
+import Comments from '../components/Comments.astro';
+import { localeUrl } from '../lib/urls';
+import { slugify } from '../lib/taxonomy';
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '../lib/posts';
+
+interface Props {
+  entry: CollectionEntry<'posts'>;
+  locale: Locale;
+  slug: string;
+  translation: CollectionEntry<'posts'> | null;
+}
+
+const { entry, locale, slug, translation } = Astro.props;
+const { title, description, date, author, image, categories, tags } = entry.data;
+
+const path = `/posts/${slug}/`;
+const canonicalUrl = new URL(localeUrl(locale, path), Astro.site);
+const imageUrl = image ? new URL(image, Astro.site) : null;
+
+const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}).format(date);
+---
+
+<Base
+  locale={locale}
+  title={`${title} · Luiz Meier`}
+  description={description}
+  translationPath={translation ? path : null}
+  canonicalUrl={canonicalUrl}
+>
+  <Fragment slot="head">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline type="module" src="/scripts/mermaid.js"></script>
+  </Fragment>
+
+  <article class="wrap post">
+    <header class="post-head">
+      <div class="meta">
+        <a class="category" href={localeUrl(locale, `/categories/${slugify(categories[0])}/`)}>{categories[0]}</a>
+        <time datetime={date.toISOString()}>{dateFmt}</time>
+      </div>
+      <h1>{title}</h1>
+      <p class="byline">{author}</p>
+    </header>
+
+    {image && <img class="cover" src={image} alt="" />}
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <footer class="post-foot">
+      {tags.map((t) => (
+        <a class="tag" href={localeUrl(locale, `/tags/${slugify(t)}/`)}>
+          #{t}
+        </a>
+      ))}
+    </footer>
+
+    <Comments locale={locale} />
+  </article>
+</Base>
+
+<style>
+  .post {
+    padding-block: 32px 56px;
+  }
+  .post-head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    color: var(--color-muted-fg);
+  }
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    margin: 0;
+  }
+  .byline {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--color-muted-fg);
+  }
+  .cover {
+    width: 100%;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    margin-bottom: 28px;
+  }
+  .prose :global(h2) {
+    font-size: 1.3rem;
+    margin-top: 2em;
+  }
+  .prose :global(h3) {
+    font-size: 1.08rem;
+    margin-top: 1.6em;
+  }
+  .prose :global(h4) {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-fg);
+    margin-top: 1.6em;
+  }
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    max-width: 68ch;
+  }
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+  }
+  .post-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+  }
+</style>
