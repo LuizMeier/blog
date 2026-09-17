@@ -1,0 +1,14 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	// Site 100% estático: sem "main" (nenhum código de Worker), só o
+	// binding de assets apontando para o build do Astro. astro dev/build
+	// continuam sem adapter Cloudflare - essa config só é usada pelo
+	// `wrangler deploy` no momento do deploy, não afeta o build do Astro.
+	// Ver migration/00-inventory.md para o porquê da escolha Workers
+	// (static assets) em vez de Cloudflare Pages "legacy".
+	"name": "blog-lmeier",
+	"compatibility_date": "2026-09-17",
+	"assets": {
+		"directory": "./dist"
+	}
+}

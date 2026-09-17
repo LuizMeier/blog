@@ -107,16 +107,29 @@ Protótipo em `astro/src/`, com 3 posts reais migrados como fixture de validaç�
 
 **Achado de ambiente, não de código:** o Astro grava o PID do processo de dev em `.astro/dev.json` para detectar uma segunda instância já rodando. Como cada container Docker reinicia a numeração de PID do zero, um container recriado frequentemente "colide" por coincidência com o PID salvo de uma execução anterior, e o Astro recusa subir — sem erro visível, a porta simplesmente não responde (sintoma: `curl` trava ou dá connection reset). Isso explica boa parte da instabilidade enfrentada ao iterar nesta sessão. Corrigido de forma permanente em `docker/docker-compose.yml`: o comando do serviço `astro` agora remove esse arquivo antes de cada `npm run dev`.
 
-## 8. CI/CD — qualidade em PR, deploy é a integração nativa do Cloudflare Pages
+## 8. CI/CD — qualidade em PR; deploy via Cloudflare Workers (static assets)
 
-Deploy **não** é feito por um workflow do GitHub Actions — é a integração nativa Git do Cloudflare Pages (configurada no dashboard, não no repositório) que builda e publica a cada push em `main`. Cheguei a criar um workflow próprio (`wrangler pages deploy` via Actions) por engano, entendendo errado o pedido; removido, porque duplicava o que a integração nativa já faz — e pior, sem o preview deploy automático por PR que ela dá de graça.
+Deploy **não** é feito por um workflow do GitHub Actions — é a build nativa conectada ao Git da Cloudflare (configurada no dashboard, não no repositório) que builda e publica a cada push em `main`. Cheguei a criar um workflow próprio duas vezes, em duas direções erradas diferentes:
 
-**Configuração do lado Cloudflare** (feita no dashboard, fora do repositório):
-- Root directory: `astro`
+1. Primeiro um workflow com `wrangler pages deploy` via Actions — removido por duplicar o que a build nativa já faz de graça (incluindo preview automático por PR).
+2. Depois recomendei o fluxo "legacy" do Cloudflare Pages sem checar a posição atual da própria Cloudflare — errado. A orientação oficial deles desde a unificação Workers/Pages é: **"you should start with Workers"** para projetos novos. Pages não está desativado (continua funcionando, recebe correção de bug), mas todo investimento em feature nova (deployments graduais, observability, etc.) vai para Workers daqui pra frente. Corrigido para o caminho que a Cloudflare recomenda hoje: **Workers com static assets**, não Pages.
+
+**Isso não reintroduz o problema do adapter da Fase 1.** Aquele problema era o `@astrojs/cloudflare` (adapter do Astro) tentando emular um runtime SSR (`workerd`) dentro do `astro dev`/`astro build`. A config de deploy abaixo é outra coisa: só um binding de assets estáticos apontando para `dist/`, sem nenhum código de Worker, sem adapter no Astro, sem afetar em nada o build/dev do site — usada apenas no momento do deploy.
+
+**`astro/wrangler.jsonc`** — config mínima:
+```json
+{ "name": "blog-lmeier", "compatibility_date": "2026-09-17", "assets": { "directory": "./dist" } }
+```
+Validado localmente com `npx wrangler deploy --dry-run`: leu os 467 arquivos de `dist/`, "No bindings found" (esperado, é só assets), sem erro.
+
+**Configuração do lado Cloudflare** (dashboard → Workers & Pages → Create application → Connect to Git → repositório `LuizMeier/blog`):
+- Project name: `blog-lmeier`
 - Build command: `npm run build`
-- Build output directory: `dist`
+- Deploy command: `npx wrangler deploy` (pré-preenchido)
+- Path (diretório do monorepo onde fica o `wrangler.jsonc`): `astro`
+- "Builds for non-production branches" habilitado: dá preview automático por PR, equivalente ao que o Pages dava de graça
 
-Isso é tudo que o Cloudflare precisa — sem `wrangler.toml` no repo, sem secrets de API token no GitHub. Cada PR ganha automaticamente uma URL de preview própria, sem nenhuma configuração extra da minha parte.
+Cada PR ganha automaticamente uma URL de preview própria.
 
 **O que fica do lado GitHub Actions** (checks de qualidade, gate antes do merge — não deploy):
 - **`.github/workflows/astro-ci.yml`** — dispara em `pull_request`, filtrado por `paths: astro/**`. Roda `astro check` (type-check), `npm run build`, e `linkinator` contra o build para pegar links internos quebrados. Complementa o preview deploy do Cloudflare: um valida que o código está correto, o outro te dá uma URL pra olhar o resultado.
@@ -129,9 +142,9 @@ Isso é tudo que o Cloudflare precisa — sem `wrangler.toml` no repo, sem secre
 
 ## 9. Pendência sua, do lado Cloudflare
 
-Conectar o repositório no dashboard do Cloudflare Pages (se ainda não fez) com a configuração de build da seção 8. Nada a configurar no GitHub para isso — sem secrets.
+Conectar o repositório no dashboard da Cloudflare (Workers & Pages → Create application → Connect to Git) com a configuração da seção 8. Nada a configurar no GitHub para isso — sem secrets.
 
-**Cloudflare Web Analytics**: habilitado via o toggle nativo do projeto Cloudflare Pages (dashboard → projeto → Web Analytics → Enable), não por script no código — mesmo raciocínio da decisão de deploy (seção 8): preferir a ferramenta nativa da Cloudflare a manter mais uma peça própria para atualizar. Google Analytics continua via código (`astro/src/components/Analytics.astro`) para preservar o histórico de dados já existente; os dois convivem sem conflito. Como essa configuração vive só no dashboard, não no repositório, fica registrada aqui para não se perder: domínio a associar é `blog.lmeier.net` (só mostra tráfego real depois do corte de DNS da Fase 4).
+**Cloudflare Web Analytics**: habilitado via o toggle nativo do projeto (dashboard → projeto → Web Analytics → Enable), não por script no código — mesmo raciocínio da decisão de deploy: preferir a ferramenta nativa da Cloudflare a manter mais uma peça própria para atualizar. Google Analytics continua via código (`astro/src/components/Analytics.astro`) para preservar o histórico de dados já existente; os dois convivem sem conflito. Como essa configuração vive só no dashboard, não no repositório, fica registrada aqui para não se perder: domínio a associar é `blog.lmeier.net` (só mostra tráfego real depois do corte de DNS da Fase 4).
 
 ## 10. Fase 3 completa — paridade de conteúdo e features
 
