@@ -56,8 +56,10 @@ password = sys.argv[6]  # Senha para acesso ao firewall
 Você pode executar o script pela linha de comando, passando os parâmetros necessários na seguinte ordem:
 
 ```shell
-LB.py 1.2.3.4 up AddressGroup Host username password### Automatizando o processo com Zabbix
+LB.py 1.2.3.4 up AddressGroup Host username password
 ```
+
+### Automatizando o processo com Zabbix
 
 Para automatizar o processo completamente, sugiro integrar o script no Zabbix, uma ferramenta bem popular de monitoramento. Aqui está como fazê-lo:
 

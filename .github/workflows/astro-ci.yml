@@ -37,4 +37,4 @@ jobs:
       - name: Check for broken internal links
         # medium.lmeier.net bloqueia requisições automatizadas (403 para
         # crawlers/bots) mesmo sendo um link válido - confirmado manualmente.
-        run: npx linkinator dist --recurse --skip "^https://(blog\.lmeier\.net|medium\.lmeier\.net)"
+        run: npx --no-install linkinator dist --recurse --skip "^https://(blog\.lmeier\.net|medium\.lmeier\.net)"

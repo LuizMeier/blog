@@ -18,8 +18,6 @@ const { title, description, date, author, image, categories, tags } = entry.data
 
 const path = `/posts/${slug}/`;
 const canonicalUrl = new URL(localeUrl(locale, path), Astro.site);
-const other: Locale = locale === 'en' ? 'pt-BR' : 'en';
-const translationUrl = translation ? new URL(localeUrl(other, path), Astro.site) : null;
 const imageUrl = image ? new URL(image, Astro.site) : null;
 
 const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
@@ -37,10 +35,6 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'pt-BR', {
   canonicalUrl={canonicalUrl}
 >
   <Fragment slot="head">
-    <link rel="alternate" hreflang={locale} href={canonicalUrl} />
-    {translationUrl && <link rel="alternate" hreflang={other} href={translationUrl} />}
-    {translationUrl && locale === 'en' && <link rel="alternate" hreflang="x-default" href={canonicalUrl} />}
-
     <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

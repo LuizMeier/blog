@@ -25,7 +25,7 @@ const t =
       <a href={localeUrl(locale, '/about/')}>{t.about}</a>
       <a href={localeUrl(locale, '/search/')} aria-label={t.search} title={t.search}>⌕</a>
       <LanguageSwitcher locale={locale} translationPath={translationPath} />
-      <ThemeToggle />
+      <ThemeToggle locale={locale} />
     </nav>
   </div>
 </header>

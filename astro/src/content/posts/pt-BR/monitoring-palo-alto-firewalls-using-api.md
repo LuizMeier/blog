@@ -20,7 +20,7 @@ Para contornar isso, desenvolvi um script em Python que se utiliza da **API** da
 O SNMP funciona capturando informações de uma árvore de dados hierárquica, que é atualizada continuamente pelo sistema operacional. Ferramentas de monitoramento como o Zabbix ou Prometheus coletam estes dados periodicamente. Por exemplo, você pode listar todas as interfaces de um dispositivo utilizando o simples comando (assumindo que você está usando a comunidade padrão public):
 
 ```shell
-snmpwalk -v 3c public 1.2.3.4 ifname
+snmpwalk -v 2c public 1.2.3.4 ifname
 ```
 
 Isto retornará uma lista com todas as interfaces, incluindo as **interfaces túnel**:
@@ -36,7 +36,7 @@ Apesar do SNMP trazer todas as interfaces listadas em `Network > Interface > Tun
 
 Para o propósito deste post, criei uma interface IPSec falsa chamada `Medium` e a conectei à interface `tunnel.1`.
 
-![Lista das interfaces túnel]((/assets/img/monitoring-using-api/list-tunnel-interfaces.png)
+![Lista das interfaces túnel](/assets/img/monitoring-using-api/list-tunnel-interfaces.png)
 *Lista das interfaces túnel*
 
 ![Lista dos túneis IPSec](/assets/img/monitoring-using-api/list-ipsec-tunnels.png)

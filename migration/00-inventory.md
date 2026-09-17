@@ -9,7 +9,7 @@ Campos observados nos 16 posts (`_posts/en/*.md`, `_posts/pt-BR/*.md`):
 | Campo | Obrigatório hoje | Observação |
 |---|---|---|
 | `title` | sim | string |
-| `author` | sim | sempre "Luiz Meier", mas com grafias inconsistentes: `"Luiz Meier"`, `Luiz Meier` (sem aspas), `"Luiz Meier "` (espaço sobrando em 1 post pt-BR) |
+| `author` | sim no conteúdo atual, mas opcional no schema Zod (`.default('Luiz Meier')`, já que 100% dos posts são do mesmo autor) | sempre "Luiz Meier", mas com grafias inconsistentes: `"Luiz Meier"`, `Luiz Meier` (sem aspas), `"Luiz Meier "` (espaço sobrando em 1 post pt-BR) |
 | `date` | sim | formatos inconsistentes: `"YYYY-MM-DD HH:MM:SS"`, `YYYY-MM-DD` (sem aspas), `"YYYY-MM-DD"`, `"YYYY-MM-DD HH:MM:SS +0000"` |
 | `categories` | sim | array, hoje já **unificado em inglês** nos dois idiomas (ver seção 3) |
 | `tags` | sim | array, mesma unificação |
@@ -51,7 +51,7 @@ Boa notícia: **já está unificada em inglês** entre os dois idiomas — os po
 
 ## 4. Tabela de redirects (URL antiga → URL atual)
 
-Todas as entradas vêm de `redirect_from` no front matter de cada post — precisam de regra 301 equivalente no `_redirects` do Cloudflare Pages.
+Todas as entradas vêm de `redirect_from` no front matter de cada post — precisam de regra 301 equivalente no `_redirects` do Cloudflare (Workers static assets).
 
 | URL antiga | URL atual |
 |---|---|
@@ -166,4 +166,4 @@ Os 16 posts reais estão migrados (`astro/src/content/posts/`), com páginas de 
 
 ## 11. Próximo passo
 
-Fase 3 concluída de ponta a ponta: conteúdo, taxonomia, comentários, analytics, busca e redirects. Falta: (a) você conectar o repositório no Cloudflare Pages (seção 9) se ainda não fez; (b) revisão sua do resultado; (c) Fase 4 — corte para produção (checklist de SEO, corte de DNS, desligar o GitHub Pages e os workflows do Jekyll).
+Fase 3 concluída de ponta a ponta: conteúdo, taxonomia, comentários, analytics, busca e redirects. Falta: (a) você conectar o repositório no Cloudflare Workers (seção 9) se ainda não fez; (b) revisão sua do resultado; (c) Fase 4 — corte para produção (checklist de SEO, corte de DNS, desligar o GitHub Pages e os workflows do Jekyll).

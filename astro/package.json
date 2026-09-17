@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "linkinator": "^8.1.0",
     "pagefind": "^1.5.2",
     "typescript": "^6.0.3",
     "wrangler": "^4.133.0"

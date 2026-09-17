@@ -62,7 +62,7 @@ I’ve made a [monitoring template available on GitHub](https://github.com/LuizM
 ![Trigger prototypes](/assets/img/monitor-csv/trigger-prototype-1.png)
 *Trigger prototypes*
 
-![Trigger prototypes](/assets/img/monitor-csv/trigger-prototype-1.png)
+![Graph prototypes](/assets/img/monitor-csv/trigger-prototype-2.png)
 *Graph prototypes*
 
 I hope this is helpfull. Enjoy!

@@ -9,6 +9,7 @@ on:
     paths:
       - '**/_posts/**/*.md'
       - 'astro/src/content/posts/**/*.md'
+      - 'astro/src/content/posts/**/*.mdx'
 
 jobs:
   review:

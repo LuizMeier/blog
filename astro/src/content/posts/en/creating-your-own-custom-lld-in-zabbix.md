@@ -50,7 +50,7 @@ Get-ChildItem C:\Temp\lalala.zip
 We were able to list the information for the file we want, but we also retrieved other details that we don't need and that are not important for monitoring. With an output like this, we won't be able to monitor just the file size. To fix this, we put the previous command in parentheses and specify that we only want the data from the `Length` column, which represents the file size.
 
 ```powershell
-(Get-ChildItem C:\Temp\lalala.zip).Lenght
+(Get-ChildItem C:\Temp\lalala.zip).Length
 ```
 
 ![Show size](/assets/img/zabbix-custom-lld/exibe-tamanho.png)
@@ -69,7 +69,7 @@ Write-host abc 123
 With that in mind, we replace the file path in the script with the variable $args[0]. This way, when we execute the script, passing the file name as a parameter, it will return the data for the specified file. Note that the beginning of the path is fixed, but it could be made fully dynamic.
 
 ```powershell
-(Get-ChildItem C:\Temp\$args[0]).Lenght
+(Get-ChildItem C:\Temp\$args[0]).Length
 ```
 
 That said, save the script and run it via PowerShell, passing the file name as a parameter to get the size of the file.

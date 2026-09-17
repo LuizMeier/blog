@@ -51,7 +51,7 @@ Get-ChildItem C:\Temp\lalala.zip
 Conseguimos listar informações do arquivo em questão, mas juntamente com outros dados que não são importantes para o que queremos. Com uma saída dessa forma, não conseguiremos monitorar somente o tamanho. Sendo assim, vamos imprimir somente o tamanho do arquivo em si. Para isto, vamos colocar o comando entre parênteses e fixar que somente queremos os dados referentes à coluna `Lenght`, que é o tamanho do arquivo.
 
 ```powershell
-(Get-ChildItem C:\Temp\lalala.zip).Lenght
+(Get-ChildItem C:\Temp\lalala.zip).Length
 ```
 
 ![Exibe tamanho](/assets/img/zabbix-custom-lld/exibe-tamanho.png)
@@ -70,7 +70,7 @@ Write-host abc 123
 Levando isso em conta, vamos substituir o nome do caminho no script pelo nome da variável `$args[0]`. Sendo assim, quando executarmos o script passando o nome do arquivo como parâmetro, ele nos trará o dado do arquivo informado. Veja que o início do caminho está fixado, mas poderia ser completamente dinâmico.
 
 ```powershell
-(Get-ChildItem C:\Temp\$args[0]).Lenght
+(Get-ChildItem C:\Temp\$args[0]).Length
 ```
 
 Isto posto, salve esse script e execute-o via powershell, passando o nome do arquivo como parâmetro para saber o tamanho do arquivo em questão.
