@@ -58,7 +58,7 @@ We were able to list the information for the file we want, but we also retrieved
 
 Great! We've successfully configured the script to print only the data we need. Now, we need to make the script run dynamically, so that for each file in the folder, the PowerShell prompt behaves differently.
 
-To achieve this, we can use a concept similar to Bash in Linux, which uses variables like $1, $2, and $n as parameters passed to a script. The only difference is that in PowerShell, this array starts at 0, using `$args[x]`, where `x` is the position of the parameter to be passed.
+To achieve this, we can use a concept similar to Bash in Linux, which uses variables like $1, $2, and $n as parameters passed to a script. The only difference is that in PowerShell, this array starts at 0, using `$args[x]`. The value of x is the position of the parameter to be passed.
 
 In the command below, for example, `abc` is `$args[0]` and `123` is `$args[1]`.
 

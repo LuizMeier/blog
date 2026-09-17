@@ -8,15 +8,17 @@ tags: ["LLD", "Monitoring", "Powershell", "Custom Scripts", "Cluster Shared Volu
 image: "/assets/img/monitor-csv/cover.png"
 ---
 
-In this post, we’ll see how to monitor Microsoft’s failover cluster disks using Zabbix’s LLD. If you have no idea what a failover cluster is, I suggest you check [here](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770737%28v=ws.11%29?redirectedfrom=MSDN).
+In this post, we’ll see how to monitor Microsoft’s failover cluster disks using Zabbix’s LLD. If you have no idea what a failover cluster is, I suggest you check [Microsoft's documentation on failover clusters](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770737%28v=ws.11%29?redirectedfrom=MSDN).
 
-Generally, the disks made available to a cluster have an “owner.” This means that the property of reading and writing to that disk belongs to a cluster node, and only to it. With CSV (Cluster Shared Volumes, and not Comma Separated List ;)), it is possible to have more than one node writing to the same volume simultaneously. This also makes the failover process faster since there is no need to unmount and then remount the volume if ownership changes. More information about CSV can be found [here](https://msdn.microsoft.com/pt-br/library/jj612868%28v=ws.11%29.aspx).
+Generally, the disks made available to a cluster have an “owner.” This means that the property of reading and writing to that disk belongs to a cluster node, and only to it. With CSV (Cluster Shared Volumes, and not Comma Separated List ;)), it is possible to have more than one node writing to the same volume simultaneously. This also makes the failover process faster since there is no need to unmount and then remount the volume if ownership changes.
+
+[More information about CSV](https://msdn.microsoft.com/pt-br/library/jj612868%28v=ws.11%29.aspx) is available from Microsoft.
 
 One of the “problems” with using CSV is that the cluster simply consumes the volume and places it in a folder inside C:\ClusterStorage\VolumeX, with X being incremented as new disks are added as CSVs.
 
 Considering that we can no longer monitor the disks natively in Zabbix using the default Zabbix keys (since the disks don’t exist in the same way!), the only option left is to develop a script to collect this data dynamically through LLD. If you don’t know what LLD is, I suggest you take a look at my [previous post](https://blog.lmeier.net/posts/creating-your-own-custom-lld-in-zabbix/) where I explain what it is and how to create your own discovery process.
 
-You can download the script (as well as the Zabbix template) that I created [here](https://github.com/LuizMeier/Zabbix/tree/master/ClusterSharedVolume). After downloading it, save it in a folder of your choice. For this script, you should save the file on the server to be monitored.
+You can download the [script and Zabbix template I created on GitHub](https://github.com/LuizMeier/Zabbix/tree/master/ClusterSharedVolume). After downloading it, save it in a folder of your choice. For this script, you should save the file on the server to be monitored.
 
 #### 1) Testing the script
 
@@ -40,7 +42,7 @@ C:\path\to\the\script\MonitorCSV.ps1 "Cluster Disk11" total
 
 #### 2) Adding the script to Zabbix
 
-I’ve made a monitoring template available [here](https://github.com/LuizMeier/Zabbix/blob/master/ClusterSharedVolume/Template_CSV.xml). However, below are the steps to create the discovery rule:
+I’ve made a [monitoring template available on GitHub](https://github.com/LuizMeier/Zabbix/blob/master/ClusterSharedVolume/Template_CSV.xml). However, below are the steps to create the discovery rule:
 
 **a)** First, create a new discovery rule that will consume the data generated in the JSON output. This will periodically process all available volumes. If a new one is found, items will also be created for this new volume.
 

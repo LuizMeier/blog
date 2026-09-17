@@ -93,14 +93,17 @@ O importante é: não é um wrapper de API.
 As principais capacidades hoje são:
 
 ### 🔎 Consulta básica
+
 - `list_zones`
 - `list_records`
 
 ### 🔍 Busca
+
 - `search_dns_record`
 - `check_ip_usage`
 
 ### 📊 Visão agregada
+
 - `get_zone_summary`
 - `get_dns_overview`
 - `get_grid_status`

@@ -30,5 +30,9 @@ jobs:
       - name: Run review
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          # secrets.TOKEN_GITHUB (PAT customizado) estava dando 401 Bad
+          # Credentials - trocado pelo GITHUB_TOKEN automático do Actions,
+          # que sempre existe e já tem "pull-requests: write" (suficiente
+          # para comentar no PR) via o bloco `permissions` acima.
+          TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/actions/post_review.py

@@ -12,7 +12,7 @@ import Callout from '../../../components/Callout.astro';
 
 ## Introduction
 
-This is the second post I am writing about Backstage. Check out the first one, where I discuss integration with Entra ID [here](https://blog.lmeier.net/posts/authentication-backstage-entra-id/). Now, let's walk through all the steps to integrate Backstage and Azure DevOps to automate resource delivery in Azure using a CI/CD pipeline. Be prepared, because this one is going to be long!
+This is the second post I am writing about Backstage. Check out [my previous post about integrating with Entra ID](https://blog.lmeier.net/posts/authentication-backstage-entra-id/). Now, let's walk through all the steps to integrate Backstage and Azure DevOps to automate resource delivery in Azure using a CI/CD pipeline. Be prepared, because this one is going to be long!
 
 I'll keep a repository on my GitHub with the Backstage code resulting from these two posts and will also make available the files we will use here.
 
@@ -245,7 +245,7 @@ spec:
 
 When using relative paths for file handling in Backstage, it **always** starts from the location where **the template was imported**.
 
-In other words, it always concatenates the path you provide with the path from where the template was imported. Thus, either you keep the files to be handled in the same location as the file from which you imported the template or use a URL from an external location, which is the approach I used here in the `fetch:template` action. More about this can be seen [here](https://backstage.io/docs/features/software-templates/) and [here](https://backstage.io/docs/tooling/cli/templates/).
+In other words, it always concatenates the path you provide with the path from where the template was imported. Thus, either you keep the files to be handled in the same location as the file from which you imported the template or use a URL from an external location, which is the approach I used here in the `fetch:template` action. More about this can be seen in the [software templates documentation](https://backstage.io/docs/features/software-templates/) and the [CLI templates documentation](https://backstage.io/docs/tooling/cli/templates/).
 </Callout>
 
 Returning to our process, create the template file in Azure DevOps (replacing the necessary fields) and then go to Backstage and follow the same import process we did before in the integration test. When importing the template, you might encounter the error below:

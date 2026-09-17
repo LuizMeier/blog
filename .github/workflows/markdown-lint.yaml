@@ -21,9 +21,9 @@ jobs:
       - name: Run markdownlint
         uses: docker://davidanson/markdownlint-cli2
         with:
-          # "_posts/*.md" (sem **) nunca pegava nada, já que os posts ficam
-          # em _posts/en/*.md e _posts/pt-BR/*.md - corrigido junto com a
-          # adição do novo local de conteúdo em astro/.
-          args: "_posts/**/*.md astro/src/content/posts/**/*.md"
+          # _posts/**/*.md (Jekyll) removido do lint: esses arquivos vão ser
+          # excluídos do repo na Fase 4 (migração completa para astro/), não
+          # vale corrigir formatação em conteúdo que já tem vida curta.
+          args: "astro/src/content/posts/**/*.md astro/src/content/posts/**/*.mdx"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

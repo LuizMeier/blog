@@ -3,9 +3,10 @@
   "blanks-around-fences": false,
   "line-length": false,
   "no-inline-html": {
-    "allowed_elements": ["kbd", "sub"]
+    "allowed_elements": ["kbd", "sub", "Callout"]
   },
   "MD013": {
     "line_length": 500
-  }
+  },
+  "MD001": false
 }

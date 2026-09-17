@@ -93,14 +93,17 @@ The key point is this: it is not an API wrapper.
 Its main capabilities today are:
 
 ### 🔎 Basic lookup
+
 - `list_zones`
 - `list_records`
 
 ### 🔍 Search
+
 - `search_dns_record`
 - `check_ip_usage`
 
 ### 📊 Aggregated view
+
 - `get_zone_summary`
 - `get_dns_overview`
 - `get_grid_status`
