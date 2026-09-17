@@ -131,6 +131,8 @@ Isso é tudo que o Cloudflare precisa — sem `wrangler.toml` no repo, sem secre
 
 Conectar o repositório no dashboard do Cloudflare Pages (se ainda não fez) com a configuração de build da seção 8. Nada a configurar no GitHub para isso — sem secrets.
 
+**Cloudflare Web Analytics**: habilitado via o toggle nativo do projeto Cloudflare Pages (dashboard → projeto → Web Analytics → Enable), não por script no código — mesmo raciocínio da decisão de deploy (seção 8): preferir a ferramenta nativa da Cloudflare a manter mais uma peça própria para atualizar. Google Analytics continua via código (`astro/src/components/Analytics.astro`) para preservar o histórico de dados já existente; os dois convivem sem conflito. Como essa configuração vive só no dashboard, não no repositório, fica registrada aqui para não se perder: domínio a associar é `blog.lmeier.net` (só mostra tráfego real depois do corte de DNS da Fase 4).
+
 ## 10. Fase 3 completa — paridade de conteúdo e features
 
 Os 16 posts reais estão migrados (`astro/src/content/posts/`), com páginas de tag/categoria individuais, giscus, analytics, busca e a tabela de redirects — ver o commit `b54bf18` para o detalhamento de cada peça. Duas coisas vale registrar aqui:
