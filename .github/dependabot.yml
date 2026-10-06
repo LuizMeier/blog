@@ -36,7 +36,8 @@ updates:
     ignore:
       # TS 7 quebra o npm ci: @astrojs/check@0.9.x só aceita TS ^5 || ^6
       # (peer dependency). Remover esta regra quando o @astrojs/check
-      # suportar TS 7 (acompanhar releases em withastro/language-tools).
+      # suportar TS 7 (conferir com: npm view @astrojs/check peerDependencies;
+      # fonte: withastro/astro, packages/language-tools/astro-check).
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
     schedule:
