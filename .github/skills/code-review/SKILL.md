@@ -26,7 +26,7 @@ Responda em português. Sem elogio de preenchimento. Se não há problemas, diga
 - Apontar comandos incorretos ou desatualizados. Revisão editorial é sugestão.
 
 ## i18n e rotas
-- i18n é manual de propósito: não usar `astro:i18n` (bug withastro/astro#16386). Usar `localeUrl()` de `lib/urls.ts`; sinalizar URLs montadas à mão.
+- i18n é manual por simplicidade. Usar `localeUrl()` de `lib/urls.ts`; sinalizar URLs montadas à mão.
 - Rota alterada em `src/pages/` exige a contrapartida em `src/pages/pt-BR/`. Textos de interface nos dois idiomas.
 
 ## Config e deploy

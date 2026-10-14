@@ -9,7 +9,7 @@ Para revisão de pull requests, use também a skill `code-review` (`.github/skil
 - CI: `npm run check`, `npm run build`, linkinator, markdownlint. Não há testes unitários: não cobrar.
 
 ## Regras essenciais
-- i18n é manual de propósito: não usar `astro:i18n` (bug withastro/astro#16386); usar `localeUrl()` de `lib/urls.ts`.
+- i18n é manual por simplicidade; usar `localeUrl()` de `lib/urls.ts`.
 - Rota alterada em `src/pages/` exige a contrapartida em `src/pages/pt-BR/`.
 - Nome do arquivo do post = slug = URL; renomear exige redirect em `public/_redirects`.
 - Categorias e tags em inglês nos dois idiomas.
