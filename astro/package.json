@@ -28,8 +28,5 @@
     "pagefind": "^1.5.2",
     "typescript": "^6.0.3",
     "wrangler": "^4.149.0"
-  },
-  "overrides": {
-    "sharp": "^0.35.5"
   }
 }
