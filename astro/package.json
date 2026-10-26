@@ -24,10 +24,10 @@
     "esbuild": true
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "linkinator": "^8.1.0",
     "pagefind": "^1.5.2",
     "typescript": "^6.0.3",
-    "wrangler": "^4.149.0"
+    "wrangler": "^4.152.0"
   }
 }
