@@ -29,5 +29,8 @@
     "pagefind": "^1.5.2",
     "typescript": "^6.0.3",
     "wrangler": "^4.156.0"
+  },
+  "overrides": {
+    "glob": "^14.0.3"
   }
 }
