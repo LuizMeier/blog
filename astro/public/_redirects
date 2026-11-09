@@ -70,5 +70,5 @@
 # Flagrado como 404 no Search Console (09/11/2026): página de arquivo do
 # tema Jekyll/Chirpy, sem equivalente direto no Astro - a home já lista
 # todos os posts, então é o destino mais próximo.
-/archives /
-/archives/ /
+/archives / 301
+/archives/ / 301
