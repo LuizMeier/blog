@@ -54,3 +54,21 @@
 # Prioridade alta: referenciada ativamente por um post no Medium (medium.lmeier.net)
 /pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301
 /pt-BR/posts/usando-api-para-monitorar-ipsec-da-palo-alto/ /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301
+# Flagrado como 404 no Search Console (09/11/2026): variante sem prefixo
+# /pt-BR/, mesmo padrão do link quebrado do Entra ID acima.
+/posts/usando-api-para-monitorar-ipsec-da-palo-alto /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301
+/posts/usando-api-para-monitorar-ipsec-da-palo-alto/ /pt-BR/posts/monitoring-palo-alto-firewalls-using-api/ 301
+
+# Flagrado como 404 no Search Console (09/11/2026): post não tinha redirect
+# da URL antiga do Jekyll (slug em pt-BR) para o slug atual (em inglês,
+# usado também na versão pt-BR - ver src/content/posts/pt-BR/).
+/posts/monitorando-cluster-shared-volumes-com-zabbix /pt-BR/posts/monitoring-cluster-shared-volumes-with-zabbix/ 301
+/posts/monitorando-cluster-shared-volumes-com-zabbix/ /pt-BR/posts/monitoring-cluster-shared-volumes-with-zabbix/ 301
+/pt-BR/posts/monitorando-cluster-shared-volumes-com-zabbix /pt-BR/posts/monitoring-cluster-shared-volumes-with-zabbix/ 301
+/pt-BR/posts/monitorando-cluster-shared-volumes-com-zabbix/ /pt-BR/posts/monitoring-cluster-shared-volumes-with-zabbix/ 301
+
+# Flagrado como 404 no Search Console (09/11/2026): página de arquivo do
+# tema Jekyll/Chirpy, sem equivalente direto no Astro - a home já lista
+# todos os posts, então é o destino mais próximo.
+/archives / 301
+/archives/ / 301
