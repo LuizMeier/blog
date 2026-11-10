@@ -26,9 +26,9 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "linkinator": "^8.1.0",
-    "pagefind": "^1.5.2",
+    "pagefind": "^1.6.0",
     "typescript": "^6.0.3",
-    "wrangler": "^4.156.0"
+    "wrangler": "^4.158.0"
   },
   "overrides": {
     "glob": "^14.0.3"
