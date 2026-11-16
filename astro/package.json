@@ -28,7 +28,7 @@
     "linkinator": "^8.1.0",
     "pagefind": "^1.6.0",
     "typescript": "^6.0.3",
-    "wrangler": "^4.158.0"
+    "wrangler": "^4.162.0"
   },
   "overrides": {
     "glob": "^14.0.3"
