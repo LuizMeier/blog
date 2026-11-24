@@ -43,4 +43,6 @@ jobs:
         # confirmado manualmente: medium.lmeier.net e code.visualstudio.com.
         # www.linkedin.com responde 429 (rate limit) de forma intermitente
         # nos runners e já derrubou o CI sem haver link quebrado.
-        run: npx --no-install linkinator dist --recurse --skip "^https://(blog\.lmeier\.net|medium\.lmeier\.net|code\.visualstudio\.com|www\.linkedin\.com)"
+        # O (/|\?|#|$) no fim delimita o hostname: sem ele, o prefixo também
+        # ignoraria hosts como www.linkedin.com.example.org.
+        run: npx --no-install linkinator dist --recurse --skip '^https://(blog\.lmeier\.net|medium\.lmeier\.net|code\.visualstudio\.com|www\.linkedin\.com)(/|\?|#|$)'
